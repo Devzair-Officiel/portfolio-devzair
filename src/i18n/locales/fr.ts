@@ -11,6 +11,12 @@ export const fr = {
   },
   skills: {
     title: 'Compétences',
+    categories: {
+      frontend: 'Frontend',
+      backend: 'Backend',
+      devops: 'DevOps & Outils',
+      learning: 'En apprentissage',
+    },
   },
   projects: {
     title: 'Projets',

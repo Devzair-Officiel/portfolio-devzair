@@ -92,7 +92,7 @@ devzair-portfolio/
 ✅ Étape 3  — Architecture des composants (arborescence + conventions)
 ✅ Étape 4  — Routing (React Router v6)
 ✅ Étape 5  — Section Hero
-⬜ Étape 6  — Section Compétences
+✅ Étape 6  — Section Compétences
 ⬜ Étape 7  — Section Projets
 ⬜ Étape 8  — Section Expériences
 ⬜ Étape 9  — Section Contact
