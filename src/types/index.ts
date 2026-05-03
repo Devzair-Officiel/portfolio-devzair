@@ -19,5 +19,5 @@ export interface ExperienceType {
   role: string
   company: string
   period: string
-  description: string
+  description: string[]
 }

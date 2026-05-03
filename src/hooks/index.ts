@@ -1,4 +1,5 @@
 export { useTheme } from './useTheme'
 export { useLang } from './useLang'
 export { useProjects } from './useProjects'
+export { useExperiences } from './useExperiences'
 export type { Theme } from './useTheme'

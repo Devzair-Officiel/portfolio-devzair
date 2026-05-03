@@ -31,6 +31,25 @@ export const fr = {
   },
   experience: {
     title: 'Expériences',
+    present: 'Aujourd\'hui',
+    roles: {
+      devlead: 'Développeur Full Stack & Dev Lead',
+      freelance: 'Développeur Full Stack',
+    },
+    descriptions: {
+      devlead: [
+        'Référent technique sur un projet de veille réglementaire, avec coordination des développements.',
+        "Conception et développement d'applications web, mise en place et intégration d'API.",
+        "Participation à l'analyse des besoins et contribution au cadrage des solutions.",
+        'Rédaction de documentation technique et suivi qualité des livrables.',
+      ],
+      freelance: [
+        "Accompagnement de clients sur des projets web sur mesure, de l'analyse du besoin à la mise en œuvre.",
+        "Développement de sites web, d'applications spécifiques et d'API pour applications web et mobiles.",
+        'Rédaction de spécifications techniques et fonctionnelles, suivi des livrables.',
+        'Formation et accompagnement des clients à la prise en main des outils développés.',
+      ],
+    },
   },
   contact: {
     title: 'Contact',

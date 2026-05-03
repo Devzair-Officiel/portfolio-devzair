@@ -30,6 +30,25 @@ export const en = {
   },
   experience: {
     title: 'Experience',
+    present: 'Present',
+    roles: {
+      devlead: 'Full Stack Developer & Dev Lead',
+      freelance: 'Full Stack Developer',
+    },
+    descriptions: {
+      devlead: [
+        'Technical lead on a regulatory monitoring project, coordinating development and technical topics.',
+        'Design and development of web applications, API setup and integration.',
+        'Participation in requirements analysis and contribution to solution scoping.',
+        'Technical documentation writing and delivery quality tracking.',
+      ],
+      freelance: [
+        'Client support on custom web projects, from requirements analysis to technical delivery.',
+        'Development of websites, custom applications and APIs for web and mobile.',
+        'Writing technical and functional specifications, delivery follow-up.',
+        'Training and onboarding clients on developed tools.',
+      ],
+    },
   },
   contact: {
     title: 'Contact',
