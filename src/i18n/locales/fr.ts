@@ -53,6 +53,15 @@ export const fr = {
   },
   contact: {
     title: 'Contact',
+    subtitle: 'Un projet ? Une question ? Écrivez-moi.',
+    name: 'Nom',
+    name_placeholder: 'Votre nom',
+    email: 'Email',
+    email_placeholder: 'votre@email.com',
+    message: 'Message',
+    message_placeholder: 'Décrivez votre projet ou votre question...',
+    submit: 'Envoyer le message',
+    or: 'Ou retrouvez-moi sur',
   },
   nav: {
     theme_dark: 'Passer en mode clair',

@@ -52,6 +52,15 @@ export const en = {
   },
   contact: {
     title: 'Contact',
+    subtitle: 'A project? A question? Write to me.',
+    name: 'Name',
+    name_placeholder: 'Your name',
+    email: 'Email',
+    email_placeholder: 'your@email.com',
+    message: 'Message',
+    message_placeholder: 'Describe your project or question...',
+    submit: 'Send message',
+    or: 'Or find me on',
   },
   nav: {
     theme_dark: 'Switch to light mode',
