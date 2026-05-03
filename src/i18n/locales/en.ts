@@ -20,6 +20,13 @@ export const en = {
   },
   projects: {
     title: 'Projects',
+    github: 'View code',
+    live: 'View site',
+    descriptions: {
+      nidemiel: 'E-commerce website for selling honey. Product catalog, cart and order management.',
+      admin_demo:
+        'Complete back-office: orders, products, customers and shipping management. Free access, no account needed.',
+    },
   },
   experience: {
     title: 'Experience',

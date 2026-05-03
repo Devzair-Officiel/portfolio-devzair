@@ -93,7 +93,7 @@ devzair-portfolio/
 ✅ Étape 4  — Routing (React Router v6)
 ✅ Étape 5  — Section Hero
 ✅ Étape 6  — Section Compétences
-⬜ Étape 7  — Section Projets
+✅ Étape 7  — Section Projets
 ⬜ Étape 8  — Section Expériences
 ⬜ Étape 9  — Section Contact
 ⬜ Étape 10 — Animations Framer Motion (scroll, transitions, micro-interactions)

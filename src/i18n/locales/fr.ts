@@ -20,6 +20,14 @@ export const fr = {
   },
   projects: {
     title: 'Projets',
+    github: 'Voir le code',
+    live: 'Voir le site',
+    descriptions: {
+      nidemiel:
+        'Site e-commerce de vente de miel. Catalogue produits, panier et gestion des commandes.',
+      admin_demo:
+        'Back-office complet : gestion des commandes, produits, clients et expéditions. Accès libre sans compte.',
+    },
   },
   experience: {
     title: 'Expériences',
