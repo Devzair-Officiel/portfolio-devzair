@@ -89,8 +89,8 @@ devzair-portfolio/
 ✅ Étape 0  — Cadrage du projet (ce document)
 ✅ Étape 1  — Initialisation : Docker dev + Vite + React + TypeScript
 ✅ Étape 2  — Configuration : Tailwind + ESLint + Prettier
-⬜ Étape 3  — Architecture des composants (arborescence + conventions)
-⬜ Étape 4  — Routing (React Router v6)
+✅ Étape 3  — Architecture des composants (arborescence + conventions)
+✅ Étape 4  — Routing (React Router v6)
 ⬜ Étape 5  — Section Hero
 ⬜ Étape 6  — Section Compétences
 ⬜ Étape 7  — Section Projets

@@ -17,6 +17,11 @@ front/
 │   ├── assets/                    ← Images, fonts, icônes importées dans les composants
 │   │   └── hero.png
 │   │
+│   ├── pages/                     ← Une page = une URL (assemblage de sections)
+│   │   ├── index.ts               ← Barrel export → import { HomePage } from '@/pages'
+│   │   ├── HomePage.tsx           ← Route /  → assemble toutes les sections
+│   │   └── NotFoundPage.tsx       ← Route /* → page 404
+│   │
 │   ├── components/                ← Composants réutilisables (Button, Card, Badge…)
 │   │   └── index.ts               ← Barrel export → import { Button } from '@/components'
 │   │
