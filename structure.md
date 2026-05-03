@@ -46,7 +46,19 @@ front/
 │   ├── types/                     ← Interfaces et types TypeScript partagés
 │   │   └── index.ts               ← ProjectType, SkillType, ExperienceType…
 │   │
-│   ├── hooks/                     ← Custom React hooks (useScrollPosition, useMediaQuery…)
+│   ├── hooks/                     ← Custom React hooks
+│   │   ├── index.ts               ← Barrel export
+│   │   ├── useTheme.ts            ← Gestion dark/light + localStorage
+│   │   └── useLang.ts             ← Gestion fr/en + localStorage
+│   │
+│   ├── context/
+│   │   └── AppContext.tsx         ← Contexte global : theme + lang accessibles partout
+│   │
+│   ├── i18n/                      ← Internationalisation (react-i18next)
+│   │   ├── index.ts               ← Config i18next (langue par défaut : fr)
+│   │   └── locales/
+│   │       ├── fr.ts              ← Traductions françaises
+│   │       └── en.ts              ← Traductions anglaises
 │   │
 │   ├── utils/                     ← Fonctions utilitaires pures (formatDate, groupBy…)
 │   │

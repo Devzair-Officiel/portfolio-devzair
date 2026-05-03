@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand: #6c63ff;
+  --color-brand-dark: #574fd6;
+}
+
+/* Thème sombre (défaut) */
+:root {
+  --surface: #0f0f13;
+  --surface-alt: #1a1a24;
+  --border: #2a2a38;
+  --text: #e8e8f0;
+  --text-muted: #8888aa;
+}
+
+/* Thème clair */
+.light {
+  --surface: #f5f5fa;
+  --surface-alt: #ffffff;
+  --border: #dddde8;
+  --text: #1a1a2e;
+  --text-muted: #666688;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--surface);
+  color: var(--text);
+}

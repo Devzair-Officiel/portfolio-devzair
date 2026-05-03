@@ -91,7 +91,7 @@ devzair-portfolio/
 ✅ Étape 2  — Configuration : Tailwind + ESLint + Prettier
 ✅ Étape 3  — Architecture des composants (arborescence + conventions)
 ✅ Étape 4  — Routing (React Router v6)
-⬜ Étape 5  — Section Hero
+✅ Étape 5  — Section Hero
 ⬜ Étape 6  — Section Compétences
 ⬜ Étape 7  — Section Projets
 ⬜ Étape 8  — Section Expériences

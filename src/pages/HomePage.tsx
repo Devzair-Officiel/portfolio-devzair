@@ -1,13 +1,17 @@
+import { Navbar } from '@/components'
 import { Hero, Skills, Projects, Experience, Contact } from '@/sections'
 
 export const HomePage = () => {
   return (
-    <main>
-      <Hero />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
-    </main>
+    <>
+      <Navbar />
+      <main className="pt-16">
+        <Hero />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Contact />
+      </main>
+    </>
   )
 }
