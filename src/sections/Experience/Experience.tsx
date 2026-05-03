@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useExperiences } from '@/hooks'
+import { fadeUp, staggerContainer, staggerItem } from '@/utils/animations'
 
 const DESCRIPTION_KEYS = ['devlead', 'freelance'] as const
 
@@ -9,14 +11,24 @@ export const Experience = () => {
 
   return (
     <section id="experience" className="py-24 px-6 max-w-4xl mx-auto">
-      <h2
+      <motion.h2
         className="text-3xl sm:text-4xl font-bold text-center mb-16"
         style={{ color: 'var(--text)' }}
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
       >
         {t('experience.title')}
-      </h2>
+      </motion.h2>
 
-      <div className="relative flex flex-col gap-0">
+      <motion.div
+        className="relative flex flex-col gap-0"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
         {/* Ligne verticale de la timeline */}
         <div
           className="absolute left-3 top-2 bottom-2 w-px"
@@ -24,7 +36,7 @@ export const Experience = () => {
         />
 
         {experiences.map((exp, index) => (
-          <div key={exp.id} className="relative pl-10 pb-12 last:pb-0">
+          <motion.div key={exp.id} className="relative pl-10 pb-12 last:pb-0" variants={staggerItem}>
             {/* Point de la timeline */}
             <div
               className="absolute left-0 top-1.5 w-6 h-6 rounded-full border-2 border-brand flex items-center justify-center"
@@ -42,7 +54,7 @@ export const Experience = () => {
                   {t(`experience.roles.${DESCRIPTION_KEYS[index]}`)}
                 </h3>
                 <span className="text-sm font-medium text-brand whitespace-nowrap">
-                  {exp.period.replace('Aujourd\'hui', t('experience.present'))}
+                  {exp.period.replace("Aujourd'hui", t('experience.present'))}
                 </span>
               </div>
 
@@ -51,19 +63,21 @@ export const Experience = () => {
               </p>
 
               <ul className="flex flex-col gap-2">
-                {(t(`experience.descriptions.${DESCRIPTION_KEYS[index]}`, { returnObjects: true }) as string[]).map(
-                  (point, i) => (
-                    <li key={i} className="flex gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
-                      <span className="text-brand mt-0.5 shrink-0">▸</span>
-                      {point}
-                    </li>
-                  ),
-                )}
+                {(
+                  t(`experience.descriptions.${DESCRIPTION_KEYS[index]}`, {
+                    returnObjects: true,
+                  }) as string[]
+                ).map((point, i) => (
+                  <li key={i} className="flex gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
+                    <span className="text-brand mt-0.5 shrink-0">▸</span>
+                    {point}
+                  </li>
+                ))}
               </ul>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   )
 }
