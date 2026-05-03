@@ -87,8 +87,8 @@ devzair-portfolio/
 
 ```
 ✅ Étape 0  — Cadrage du projet (ce document)
-⬜ Étape 1  — Initialisation : Docker dev + Vite + React + TypeScript
-⬜ Étape 2  — Configuration : Tailwind + ESLint + Prettier
+✅ Étape 1  — Initialisation : Docker dev + Vite + React + TypeScript
+✅ Étape 2  — Configuration : Tailwind + ESLint + Prettier
 ⬜ Étape 3  — Architecture des composants (arborescence + conventions)
 ⬜ Étape 4  — Routing (React Router v6)
 ⬜ Étape 5  — Section Hero
@@ -221,6 +221,20 @@ Chaque étape suivra ce format :
 ---
 
 ## 📁 Données du portfolio (contenu réel)
+
+### Stratégie des données
+
+| Section       | Phase 1 (maintenant)         | Phase 2 (API)                        |
+|---------------|------------------------------|--------------------------------------|
+| Compétences   | Statique dans `src/data/`    | Statique (pas de gestion admin prévue) |
+| **Projets**   | Statique dans `src/data/` ⚠️ | **Dynamique via API Python + admin** |
+| **Expériences** | Statique dans `src/data/` ⚠️ | **Dynamique via API Python + admin** |
+| Contact       | Formulaire → API email       | Idem                                 |
+
+> ⚠️ Les fichiers `data/projects.ts` et `data/experiences.ts` sont **temporaires**.
+> Ils seront remplacés en Phase 2 par des appels à l'API FastAPI.
+> Les types TypeScript (`ProjectType`, `ExperienceType`) resteront identiques — seule la source change.
+> Prévoir un custom hook par ressource (`useProjects`, `useExperiences`) pour isoler la couche data.
 
 ### Compétences
 **Frontend** : HTML, CSS, SCSS, Bootstrap, Tailwind, JavaScript, TypeScript, Vue.js, React
