@@ -48,8 +48,8 @@ git branch -d design/option-c
 
 | Branche          | Description                                      | Statut     |
 |------------------|--------------------------------------------------|------------|
-| `main`           | Base du projet (avant tout design)               | Stable     |
+| `main`           | Design validé (merge de design/mix)              | ✅ Production |
 | `design/option-a`| Spotlight — halos, glow, Plus Jakarta Sans       | Archivée   |
 | `design/option-b`| Editorial — grille, DM Serif, JetBrains Mono     | Archivée   |
 | `design/option-c`| Glassmorphism — mesh gradient, verre dépoli      | Archivée   |
-| `design/mix`     | Mix final — navbar A, skills revu, cards B+C     | En cours   |
+| `design/mix`     | Mix final — mergé dans main                      | Mergée ✅  |

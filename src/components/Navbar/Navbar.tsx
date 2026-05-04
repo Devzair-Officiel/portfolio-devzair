@@ -25,8 +25,15 @@ export const Navbar = () => {
       }}
     >
       <div className="flex items-center justify-between px-6 py-4 max-w-5xl mx-auto">
-        <a href="#hero" className="font-extrabold tracking-widest text-sm uppercase text-brand">
-          devZair
+        <a href="#hero" aria-label="devZair — retour en haut">
+          <img
+            src="/devzair.png"
+            alt="devZair"
+            width={36}
+            height={36}
+            className="rounded-lg"
+            style={{ boxShadow: 'var(--logo-shadow)' }}
+          />
         </a>
 
         {/* Nav desktop */}

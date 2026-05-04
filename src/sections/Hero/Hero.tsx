@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { LogoPlaceholder } from '@/components'
 import { fadeUp, staggerContainer } from '@/utils/animations'
 
 export const Hero = () => {
@@ -18,7 +17,14 @@ export const Hero = () => {
         animate="visible"
       >
         <motion.div variants={fadeUp}>
-          <LogoPlaceholder />
+          <img
+            src="/devzair.png"
+            alt="devZair logo"
+            width={96}
+            height={96}
+            className="rounded-2xl"
+            style={{ boxShadow: 'var(--logo-shadow)' }}
+          />
         </motion.div>
 
         <motion.div className="flex flex-col gap-3" variants={fadeUp}>
@@ -28,7 +34,7 @@ export const Hero = () => {
           <h1
             className="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight"
             style={{
-              background: 'linear-gradient(135deg, #eeeef5 30%, #a78bfa 100%)',
+              background: 'var(--hero-gradient)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}

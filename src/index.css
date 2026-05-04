@@ -20,21 +20,29 @@
   --glass: blur(14px);
   --glow-sm: 0 0 14px #7c6fff33;
   --glow-md: 0 0 28px #7c6fff44;
+  --hero-gradient: linear-gradient(135deg, #eeeef5 30%, #a78bfa 100%);
+  --logo-shadow: 0 0 32px #7c6fff44, 0 8px 32px rgba(0,0,0,0.4);
+  --halo-primary: 0.2;
+  --halo-secondary: 0.1;
 }
 
 /* Thème clair */
 .light {
-  --surface: #f4f4fb;
+  --surface: #f0f0f8;
   --surface-alt: #ffffff;
-  --surface-card: rgba(255,255,255,0.7);
+  --surface-card: rgba(255,255,255,0.88);
   --surface-card-solid: #ffffff;
-  --border: rgba(0,0,0,0.07);
-  --border-hover: rgba(124,111,255,0.5);
-  --text: #111128;
-  --text-muted: #666688;
-  --glass: blur(14px);
-  --glow-sm: 0 0 14px #7c6fff22;
-  --glow-md: 0 0 28px #7c6fff33;
+  --border: rgba(100,90,200,0.13);
+  --border-hover: rgba(124,111,255,0.45);
+  --text: #0e0e24;
+  --text-muted: #5a5a80;
+  --glass: blur(16px);
+  --glow-sm: 0 2px 16px rgba(124,111,255,0.15);
+  --glow-md: 0 4px 28px rgba(124,111,255,0.22);
+  --hero-gradient: linear-gradient(135deg, #1a1a3e 30%, #7c6fff 100%);
+  --logo-shadow: 0 4px 24px rgba(124,111,255,0.2), 0 8px 32px rgba(0,0,0,0.08);
+  --halo-primary: 0.08;
+  --halo-secondary: 0.05;
 }
 
 html {
