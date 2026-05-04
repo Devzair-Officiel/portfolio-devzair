@@ -1,9 +1,24 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { fadeUp, staggerContainer } from '@/utils/animations'
+import { api } from '@/utils/api'
 
 export const Hero = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language.startsWith('en') ? 'en' : 'fr'
+  const [settingsMap, setSettingsMap] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    api.settings.list().then(settings => {
+      const map: Record<string, string> = {}
+      settings.forEach(s => { map[s.key] = s.value })
+      setSettingsMap(map)
+    }).catch(() => {})
+  }, [])
+
+  const heroTitle = settingsMap[`hero_title_${lang}`] ?? null
+  const heroTagline = settingsMap[`hero_tagline_${lang}`] ?? null
 
   return (
     <section
@@ -45,7 +60,7 @@ export const Hero = () => {
             className="text-lg sm:text-xl font-medium tracking-wide"
             style={{ color: 'var(--text-muted)' }}
           >
-            {t('hero.title')}
+            {heroTitle ?? t('hero.title')}
           </h2>
         </motion.div>
 
@@ -54,7 +69,7 @@ export const Hero = () => {
           style={{ color: 'var(--text-muted)' }}
           variants={fadeUp}
         >
-          {t('hero.tagline')}
+          {heroTagline ?? t('hero.tagline')}
         </motion.p>
 
         <motion.div className="flex flex-wrap gap-4 justify-center" variants={fadeUp}>
