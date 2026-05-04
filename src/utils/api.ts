@@ -4,6 +4,16 @@ export interface ApiSkill {
   id: number
   name: string
   category: string
+  order: number
+}
+
+export interface ApiCategory {
+  id: number
+  key: string
+  label_fr: string
+  label_en: string
+  accent: string
+  order: number
 }
 
 export interface ApiSetting {
@@ -38,6 +48,51 @@ const authHeaders = (token: string) => ({
 })
 
 export const api = {
+  categories: {
+    list: async (): Promise<ApiCategory[]> => {
+      const res = await fetch(`${API_URL}/api/v1/categories/`)
+      if (!res.ok) throw new Error('Erreur lors du chargement')
+      return res.json() as Promise<ApiCategory[]>
+    },
+
+    create: async (token: string, data: Omit<ApiCategory, 'id' | 'order'>): Promise<ApiCategory> => {
+      const res = await fetch(`${API_URL}/api/v1/categories/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) throw new Error('Erreur lors de la création')
+      return res.json() as Promise<ApiCategory>
+    },
+
+    update: async (token: string, id: number, data: Partial<Pick<ApiCategory, 'label_fr' | 'label_en' | 'accent'>>): Promise<ApiCategory> => {
+      const res = await fetch(`${API_URL}/api/v1/categories/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) throw new Error('Erreur lors de la mise à jour')
+      return res.json() as Promise<ApiCategory>
+    },
+
+    delete: async (token: string, id: number): Promise<void> => {
+      const res = await fetch(`${API_URL}/api/v1/categories/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!res.ok) throw new Error('Erreur lors de la suppression')
+    },
+
+    reorder: async (token: string, orderedIds: number[]): Promise<void> => {
+      const res = await fetch(`${API_URL}/api/v1/categories/reorder`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(orderedIds),
+      })
+      if (!res.ok) throw new Error('Erreur lors du réordonnancement')
+    },
+  },
+
   skills: {
     list: async (): Promise<ApiSkill[]> => {
       const res = await fetch(`${API_URL}/api/v1/skills/`)
@@ -53,6 +108,15 @@ export const api = {
       })
       if (!res.ok) throw new Error('Erreur lors de la création')
       return res.json() as Promise<ApiSkill>
+    },
+
+    reorder: async (token: string, orderedIds: number[]): Promise<void> => {
+      const res = await fetch(`${API_URL}/api/v1/skills/reorder`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(orderedIds),
+      })
+      if (!res.ok) throw new Error('Erreur lors du réordonnancement')
     },
 
     delete: async (token: string, id: number): Promise<void> => {
