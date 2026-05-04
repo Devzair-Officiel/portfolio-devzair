@@ -1,5 +1,11 @@
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
+export interface ApiSkill {
+  id: number
+  name: string
+  category: string
+}
+
 export interface ApiSetting {
   key: string
   value: string
@@ -32,6 +38,32 @@ const authHeaders = (token: string) => ({
 })
 
 export const api = {
+  skills: {
+    list: async (): Promise<ApiSkill[]> => {
+      const res = await fetch(`${API_URL}/api/v1/skills/`)
+      if (!res.ok) throw new Error('Erreur lors du chargement')
+      return res.json() as Promise<ApiSkill[]>
+    },
+
+    create: async (token: string, name: string, category: string): Promise<ApiSkill> => {
+      const res = await fetch(`${API_URL}/api/v1/skills/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ name, category }),
+      })
+      if (!res.ok) throw new Error('Erreur lors de la création')
+      return res.json() as Promise<ApiSkill>
+    },
+
+    delete: async (token: string, id: number): Promise<void> => {
+      const res = await fetch(`${API_URL}/api/v1/skills/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!res.ok) throw new Error('Erreur lors de la suppression')
+    },
+  },
+
   settings: {
     list: async (): Promise<ApiSetting[]> => {
       const res = await fetch(`${API_URL}/api/v1/settings/`)

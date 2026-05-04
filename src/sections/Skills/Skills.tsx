@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { skills } from '@/data'
+import { skills as staticSkills } from '@/data'
+import { api } from '@/utils/api'
 import { fadeUp, staggerContainer, staggerItem } from '@/utils/animations'
 import type { SkillType } from '@/types'
 
@@ -13,10 +15,19 @@ const CATEGORIES: { key: SkillType['category']; accent: string }[] = [
 
 export const Skills = () => {
   const { t } = useTranslation()
+  const [skillList, setSkillList] = useState<SkillType[]>(staticSkills)
+
+  useEffect(() => {
+    api.skills.list().then(apiSkills => {
+      if (apiSkills.length > 0) {
+        setSkillList(apiSkills.map(s => ({ name: s.name, category: s.category as SkillType['category'] })))
+      }
+    }).catch(() => {})
+  }, [])
 
   const grouped = CATEGORIES.reduce<Record<SkillType['category'], SkillType[]>>(
     (acc, { key }) => {
-      acc[key] = skills.filter(s => s.category === key)
+      acc[key] = skillList.filter(s => s.category === key)
       return acc
     },
     {} as Record<SkillType['category'], SkillType[]>,

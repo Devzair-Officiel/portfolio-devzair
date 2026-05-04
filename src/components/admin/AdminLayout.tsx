@@ -25,6 +25,15 @@ const navItems = [
     ),
   },
   {
+    to: '/admin/skills',
+    label: 'Compétences',
+    icon: (
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" />
+      </svg>
+    ),
+  },
+  {
     to: '/admin/content',
     label: 'Contenu',
     icon: (
