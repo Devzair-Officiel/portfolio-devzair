@@ -6,7 +6,7 @@ import { fadeUp, staggerContainer, staggerItem } from '@/utils/animations'
 
 export const Projects = () => {
   const { t } = useTranslation()
-  const projects = useProjects()
+  const { projects, loading, error } = useProjects()
 
   return (
     <section id="projects" className="py-24 px-6 max-w-4xl mx-auto">
@@ -21,19 +21,33 @@ export const Projects = () => {
         {t('projects.title')}
       </motion.h2>
 
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        {projects.map(project => (
-          <motion.div key={project.id} variants={staggerItem}>
-            <ProjectCard project={project} />
-          </motion.div>
-        ))}
-      </motion.div>
+      {loading && (
+        <p className="text-center" style={{ color: 'var(--text-muted)' }}>
+          Chargement…
+        </p>
+      )}
+
+      {error && (
+        <p className="text-center text-red-500">
+          Impossible de charger les projets.
+        </p>
+      )}
+
+      {!loading && !error && (
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          {projects.map(project => (
+            <motion.div key={project.id} variants={staggerItem}>
+              <ProjectCard project={project} />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
     </section>
   )
 }
