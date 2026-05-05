@@ -1,10 +1,10 @@
 {
 	admin off
-	email {$CADDY_EMAIL}
+	# Pas de HTTPS — Apache gère SSL en amont
+	auto_https off
 }
 
-# Frontend — devzair.fr
-{$CADDY_DOMAIN} {
+:80 {
 	root * /srv
 	try_files {path} /index.html
 	file_server
@@ -24,9 +24,4 @@
 	header @html Cache-Control "no-cache"
 
 	encode gzip
-}
-
-# API — api-portfolio.devzair.fr
-{$CADDY_API_DOMAIN} {
-	reverse_proxy api:8000
 }

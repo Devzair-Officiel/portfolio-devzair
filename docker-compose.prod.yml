@@ -27,6 +27,8 @@ services:
     container_name: devzair-api
     restart: unless-stopped
     env_file: .env
+    ports:
+      - "127.0.0.1:8000:8000"
     volumes:
       - uploads_data:/app/uploads
     depends_on:
@@ -46,22 +48,13 @@ services:
     container_name: devzair-frontend
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - api
+      - "127.0.0.1:8081:80"
     networks:
       - web
 
 volumes:
   postgres_data:
   uploads_data:
-  caddy_data:
-  caddy_config:
 
 networks:
   internal:
