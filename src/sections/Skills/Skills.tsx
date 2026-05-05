@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { skills as staticSkills } from '@/data'
-import { api, type ApiCategory, type ApiSkill } from '@/utils/api'
+import { api, type ApiCategory } from '@/utils/api'
 import { fadeUp, staggerContainer, staggerItem } from '@/utils/animations'
 import type { SkillType } from '@/types'
 
