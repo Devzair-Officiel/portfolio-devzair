@@ -7,7 +7,7 @@ import { TagInput } from '@/components/admin/TagInput'
 export const AdminProjectFormPage = () => {
   const { id } = useParams()
   const isEdit = id !== undefined
-  const { token } = useAuthContext()
+  const { authFetch } = useAuthContext()
   const navigate = useNavigate()
 
   const [title, setTitle] = useState('')
@@ -52,9 +52,9 @@ export const AdminProjectFormPage = () => {
     }
     try {
       if (isEdit) {
-        await api.projects.update(token!, Number(id), payload)
+        await api.projects.update(authFetch, Number(id), payload)
       } else {
-        await api.projects.create(token!, payload)
+        await api.projects.create(authFetch, payload)
       }
       navigate('/admin/projects')
     } catch {
@@ -150,7 +150,7 @@ export const AdminProjectFormPage = () => {
         </div>
 
         {/* URLs */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium uppercase tracking-wide" style={labelStyle}>
               URL GitHub

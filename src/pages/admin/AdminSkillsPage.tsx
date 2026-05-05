@@ -71,29 +71,33 @@ const SortableSkill = ({ skill, accent, onDelete, deleting }: SortableSkillProps
 interface AddCategoryModalProps {
   onClose: () => void
   onAdd: (cat: ApiCategory) => void
-  token: string
+  authFetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
 }
 
 const PRESET_COLORS = ['#818cf8', '#34d399', '#f59e0b', '#7c6fff', '#f87171', '#38bdf8', '#fb923c', '#a78bfa']
 
-const AddCategoryModal = ({ onClose, onAdd, token }: AddCategoryModalProps) => {
+const AddCategoryModal = ({ onClose, onAdd, authFetch }: AddCategoryModalProps) => {
   const [labelFr, setLabelFr] = useState('')
   const [labelEn, setLabelEn] = useState('')
   const [accent, setAccent] = useState('#818cf8')
   const [key, setKey] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async () => {
     if (!labelFr.trim() || !key.trim()) return
+    setError(null)
     setLoading(true)
     try {
-      const cat = await api.categories.create(token, {
+      const cat = await api.categories.create(authFetch, {
         key: key.trim().toLowerCase().replace(/\s+/g, '_'),
         label_fr: labelFr.trim(),
         label_en: labelEn.trim() || labelFr.trim(),
         accent,
       })
       onAdd(cat)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erreur inconnue')
     } finally {
       setLoading(false)
     }
@@ -115,6 +119,12 @@ const AddCategoryModal = ({ onClose, onAdd, token }: AddCategoryModalProps) => {
           <h2 className="text-lg font-bold" style={{ color: 'var(--text)' }}>Nouvelle catégorie</h2>
           <button onClick={onClose} className="text-lg hover:opacity-60 transition-opacity" style={{ color: 'var(--text-muted)' }}>×</button>
         </div>
+
+        {error && (
+          <div className="px-3 py-2 rounded-xl text-xs" style={{ background: '#f8717122', color: '#f87171', border: '1px solid #f8717144' }}>
+            {error}
+          </div>
+        )}
 
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-medium uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>Identifiant (slug)</label>
@@ -189,13 +199,14 @@ const AddCategoryModal = ({ onClose, onAdd, token }: AddCategoryModalProps) => {
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export const AdminSkillsPage = () => {
-  const { token } = useAuthContext()
+  const { authFetch } = useAuthContext()
   const [categories, setCategories] = useState<ApiCategory[]>([])
   const [skills, setSkills] = useState<ApiSkill[]>([])
   const [fetching, setFetching] = useState(true)
   const [newNames, setNewNames] = useState<Record<string, string>>({})
   const [loadingAdd, setLoadingAdd] = useState<Record<string, boolean>>({})
   const [loadingDel, setLoadingDel] = useState<Record<number, boolean>>({})
+  const [addErrors, setAddErrors] = useState<Record<string, string>>({})
   const [showAddCat, setShowAddCat] = useState(false)
   const saveTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
 
@@ -223,27 +234,31 @@ export const AdminSkillsPage = () => {
 
     clearTimeout(saveTimers.current[categoryKey])
     saveTimers.current[categoryKey] = setTimeout(() => {
-      api.skills.reorder(token!, reordered.map(s => s.id)).catch(() => {})
+      api.skills.reorder(authFetch, reordered.map((s: ApiSkill) => s.id)).catch(() => {})
     }, 600)
   }
 
   const handleAdd = async (category: string) => {
     const name = newNames[category]?.trim()
-    if (!name) return
+    if (!name || !authFetch) return
     setLoadingAdd(prev => ({ ...prev, [category]: true }))
+    setAddErrors(prev => ({ ...prev, [category]: '' }))
     try {
-      const skill = await api.skills.create(token!, name, category)
+      const skill = await api.skills.create(authFetch, name, category)
       setSkills(prev => [...prev, skill])
       setNewNames(prev => ({ ...prev, [category]: '' }))
+    } catch (e) {
+      setAddErrors(prev => ({ ...prev, [category]: e instanceof Error ? e.message : 'Erreur' }))
     } finally {
       setLoadingAdd(prev => ({ ...prev, [category]: false }))
     }
   }
 
   const handleDelete = async (id: number) => {
+    if (!authFetch) return
     setLoadingDel(prev => ({ ...prev, [id]: true }))
     try {
-      await api.skills.delete(token!, id)
+      await api.skills.delete(authFetch, id)
       setSkills(prev => prev.filter(s => s.id !== id))
     } finally {
       setLoadingDel(prev => ({ ...prev, [id]: false }))
@@ -251,17 +266,22 @@ export const AdminSkillsPage = () => {
   }
 
   const handleDeleteCategory = async (id: number) => {
-    await api.categories.delete(token!, id)
+    if (!authFetch) return
+    await api.categories.delete(authFetch, id)
     setCategories(prev => prev.filter(c => c.id !== id))
   }
 
   if (fetching) return <p style={{ color: 'var(--text-muted)' }}>Chargement…</p>
 
+  if (!authFetch) return (
+    <p style={{ color: '#f87171' }}>Session expirée — merci de te reconnecter.</p>
+  )
+
   return (
     <div className="max-w-3xl">
       {showAddCat && (
         <AddCategoryModal
-          token={token!}
+          authFetch={authFetch}
           onClose={() => setShowAddCat(false)}
           onAdd={cat => { setCategories(prev => [...prev, cat]); setShowAddCat(false) }}
         />
@@ -287,6 +307,17 @@ export const AdminSkillsPage = () => {
         </button>
       </div>
 
+      {categories.length === 0 && (
+        <div
+          className="px-5 py-8 rounded-2xl text-center"
+          style={{ background: 'var(--surface-alt)', border: '1px solid var(--border)' }}
+        >
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+            Aucune catégorie. Commence par en créer une avec le bouton ci-dessus.
+          </p>
+        </div>
+      )}
+
       <div className="flex flex-col gap-5">
         {categories.map(({ id, key, label_fr, accent }) => {
           const catSkills = skills.filter(s => s.category === key)
@@ -296,7 +327,6 @@ export const AdminSkillsPage = () => {
               className="p-5 rounded-2xl flex flex-col gap-4"
               style={{ background: 'var(--surface-alt)', border: '1px solid var(--border)' }}
             >
-              {/* Header */}
               <div className="flex items-center gap-2">
                 <div className="w-1 h-4 rounded-full shrink-0" style={{ backgroundColor: accent }} />
                 <h2 className="text-sm font-semibold" style={{ color: accent }}>{label_fr}</h2>
@@ -311,13 +341,11 @@ export const AdminSkillsPage = () => {
                   onClick={() => handleDeleteCategory(id)}
                   className="ml-auto text-xs px-2 py-1 rounded-lg transition-opacity hover:opacity-70"
                   style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-                  title="Supprimer la catégorie"
                 >
                   Supprimer
                 </button>
               </div>
 
-              {/* Sortable chips */}
               <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={e => handleDragEnd(e, key)}>
                 <SortableContext items={catSkills.map(s => s.id)} strategy={horizontalListSortingStrategy}>
                   <div className="flex flex-wrap gap-2 min-h-9">
@@ -331,13 +359,16 @@ export const AdminSkillsPage = () => {
                       />
                     ))}
                     {catSkills.length === 0 && (
-                      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Aucune techno</p>
+                      <p className="text-xs self-center" style={{ color: 'var(--text-muted)' }}>Aucune techno</p>
                     )}
                   </div>
                 </SortableContext>
               </DndContext>
 
-              {/* Add input */}
+              {addErrors[key] && (
+                <p className="text-xs" style={{ color: '#f87171' }}>{addErrors[key]}</p>
+              )}
+
               <div className="flex gap-2">
                 <input
                   type="text"

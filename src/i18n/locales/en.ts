@@ -61,6 +61,8 @@ export const en = {
     message_placeholder: 'Describe your project or question...',
     submit: 'Send message',
     or: 'Or find me on',
+    success: 'Message sent! I will get back to you as soon as possible.',
+    error: 'Something went wrong. Please try again or contact me directly by email.',
   },
   nav: {
     theme_dark: 'Switch to light mode',

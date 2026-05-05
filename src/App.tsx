@@ -9,6 +9,8 @@ import { AdminProjectFormPage } from '@/pages/admin/AdminProjectFormPage'
 import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage'
 import { AdminContentPage } from '@/pages/admin/AdminContentPage'
 import { AdminSkillsPage } from '@/pages/admin/AdminSkillsPage'
+import { AdminExperiencesPage } from '@/pages/admin/AdminExperiencesPage'
+import { AdminExperienceFormPage } from '@/pages/admin/AdminExperienceFormPage'
 
 const App = () => {
   return (
@@ -26,6 +28,9 @@ const App = () => {
               <Route path="projects/:id/edit" element={<AdminProjectFormPage />} />
               <Route path="content" element={<AdminContentPage />} />
               <Route path="skills" element={<AdminSkillsPage />} />
+              <Route path="experiences" element={<AdminExperiencesPage />} />
+              <Route path="experiences/new" element={<AdminExperienceFormPage />} />
+              <Route path="experiences/:id/edit" element={<AdminExperienceFormPage />} />
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />

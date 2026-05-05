@@ -62,6 +62,8 @@ export const fr = {
     message_placeholder: 'Décrivez votre projet ou votre question...',
     submit: 'Envoyer le message',
     or: 'Ou retrouvez-moi sur',
+    success: 'Message envoyé ! Je vous répondrai dans les plus brefs délais.',
+    error: 'Une erreur est survenue. Merci de réessayer ou de me contacter directement par email.',
   },
   nav: {
     theme_dark: 'Passer en mode clair',

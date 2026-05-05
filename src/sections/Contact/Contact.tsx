@@ -3,24 +3,41 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { fadeUp, staggerContainer } from '@/utils/animations'
 
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+
 interface FormState {
   name: string
   email: string
   message: string
 }
 
+type Status = 'idle' | 'loading' | 'success' | 'error'
+
 export const Contact = () => {
   const { t } = useTranslation()
   const [form, setForm] = useState<FormState>({ name: '', email: '', message: '' })
   const [focused, setFocused] = useState<string | null>(null)
+  const [status, setStatus] = useState<Status>('idle')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  // Phase 2 : brancher handleSubmit sur l'API FastAPI (POST /contact)
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setStatus('loading')
+    try {
+      const res = await fetch(`${API_URL}/api/v1/contact/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error()
+      setStatus('success')
+      setForm({ name: '', email: '', message: '' })
+    } catch {
+      setStatus('error')
+    }
   }
 
   const fieldStyle = (name: string) => ({
@@ -68,10 +85,10 @@ export const Contact = () => {
           <div className="flex flex-col gap-2">
             <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>Email</p>
             <a
-              href="mailto:aurelien.boudon@devzair.fr"
+              href="mailto:contact@devzair.fr"
               className="text-sm font-medium transition-colors duration-200 text-brand"
             >
-              aurelien.boudon@devzair.fr
+              contact@devzair.fr
             </a>
           </div>
 
@@ -164,9 +181,29 @@ export const Contact = () => {
             />
           </motion.div>
 
+          {status === 'success' && (
+            <motion.p
+              variants={fadeUp}
+              className="text-sm px-4 py-3 rounded-xl"
+              style={{ background: '#34d39922', color: '#34d399', border: '1px solid #34d39944' }}
+            >
+              {t('contact.success')}
+            </motion.p>
+          )}
+          {status === 'error' && (
+            <motion.p
+              variants={fadeUp}
+              className="text-sm px-4 py-3 rounded-xl"
+              style={{ background: '#f8717122', color: '#f87171', border: '1px solid #f8717144' }}
+            >
+              {t('contact.error')}
+            </motion.p>
+          )}
+
           <motion.button
             type="submit"
-            className="self-end px-8 py-3 rounded-xl text-sm font-semibold text-white transition-all duration-300 cursor-pointer"
+            disabled={status === 'loading'}
+            className="self-end px-8 py-3 rounded-xl text-sm font-semibold text-white transition-all duration-300 cursor-pointer disabled:opacity-50"
             style={{
               background: 'linear-gradient(135deg, #7c6fff, #a78bfa)',
               boxShadow: 'var(--glow-md)',
@@ -174,7 +211,7 @@ export const Contact = () => {
             variants={fadeUp}
             whileHover={{ boxShadow: '0 0 36px #7c6fff66' }}
           >
-            {t('contact.submit')} →
+            {status === 'loading' ? '…' : `${t('contact.submit')} →`}
           </motion.button>
         </motion.form>
       </div>

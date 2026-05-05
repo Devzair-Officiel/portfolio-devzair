@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '@/context/AuthContext'
 import { api, type ApiProject } from '@/utils/api'
+import { SkeletonTable } from '@/components/admin/Skeleton'
 
 export const AdminProjectsPage = () => {
-  const { token } = useAuthContext()
+  const { authFetch } = useAuthContext()
   const [projects, setProjects] = useState<ApiProject[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -23,7 +24,7 @@ export const AdminProjectsPage = () => {
   const handleDelete = async (id: number, title: string) => {
     if (!confirm(`Supprimer "${title}" définitivement ?`)) return
     try {
-      await api.projects.delete(token!, id)
+      await api.projects.delete(authFetch, id)
       setProjects(prev => prev.filter(p => p.id !== id))
     } catch {
       alert('Erreur lors de la suppression')
@@ -32,7 +33,7 @@ export const AdminProjectsPage = () => {
 
   const handleToggleActive = async (project: ApiProject) => {
     try {
-      const updated = await api.projects.update(token!, project.id, { is_active: !project.is_active })
+      const updated = await api.projects.update(authFetch, project.id, { is_active: !project.is_active })
       setProjects(prev => prev.map(p => (p.id === updated.id ? updated : p)))
     } catch {
       alert('Erreur lors de la mise à jour')
@@ -61,12 +62,12 @@ export const AdminProjectsPage = () => {
         </Link>
       </div>
 
-      {loading && <p style={{ color: 'var(--text-muted)' }}>Chargement…</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {loading && <SkeletonTable rows={4} />}
+      {error && <p className="text-sm" style={{ color: '#f87171' }}>{error}</p>}
 
       {!loading && !error && (
         <div
-          className="rounded-2xl overflow-hidden"
+          className="rounded-2xl overflow-hidden overflow-x-auto"
           style={{ border: '1px solid var(--border)', background: 'var(--surface-card-solid)' }}
         >
           {projects.length === 0 ? (
@@ -92,9 +93,12 @@ export const AdminProjectsPage = () => {
                 {projects.map((project, i) => (
                   <tr
                     key={project.id}
+                    className="transition-colors duration-100"
                     style={{
                       borderBottom: i < projects.length - 1 ? '1px solid var(--border)' : 'none',
                     }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-alt)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                   >
                     {/* Statut */}
                     <td className="px-5 py-4">

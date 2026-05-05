@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { fadeUp, staggerContainer } from '@/utils/animations'
 import { api } from '@/utils/api'
 
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+
 export const Hero = () => {
   const { t, i18n } = useTranslation()
   const lang = i18n.language.startsWith('en') ? 'en' : 'fr'
@@ -19,6 +21,8 @@ export const Hero = () => {
 
   const heroTitle = settingsMap[`hero_title_${lang}`] ?? null
   const heroTagline = settingsMap[`hero_tagline_${lang}`] ?? null
+  const githubUrl = settingsMap['github_url'] || 'https://github.com/devzair-officiel'
+  const logoSrc = settingsMap['logo_url'] ? `${API_URL}${settingsMap['logo_url']}` : '/devzair.png'
 
   return (
     <section
@@ -33,7 +37,7 @@ export const Hero = () => {
       >
         <motion.div variants={fadeUp}>
           <img
-            src="/devzair.png"
+            src={logoSrc}
             alt="devZair logo"
             width={96}
             height={96}
@@ -74,7 +78,7 @@ export const Hero = () => {
 
         <motion.div className="flex flex-wrap gap-4 justify-center" variants={fadeUp}>
           <a
-            href="https://github.com/devzair-officiel"
+            href={githubUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 rounded-xl bg-brand text-white font-semibold text-sm tracking-wide transition-all duration-200"
