@@ -11,7 +11,7 @@ fi
 
 # Pull front et api
 git pull origin main
-cd ../api && git pull origin main && cd ../front
+cd ../portfolio-devzair-api && git pull origin main && cd ../portfolio-devzair
 
 # Build et redémarrage
 docker compose -f docker-compose.prod.yml build --no-cache

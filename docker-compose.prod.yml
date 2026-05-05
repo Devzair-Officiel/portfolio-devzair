@@ -22,7 +22,7 @@ services:
   # ─── API FastAPI ───────────────────────────────────────────────────────────
   api:
     build:
-      context: ../api
+      context: ../portfolio-devzair-api
       dockerfile: Dockerfile
     container_name: devzair-api
     restart: unless-stopped
