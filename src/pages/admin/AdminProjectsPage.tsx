@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '@/context/AuthContext'
 import { api, type ApiProject } from '@/utils/api'
-import { SkeletonTable } from '@/components/admin/Skeleton'
+import { SkeletonCard } from '@/components/admin/Skeleton'
 
 export const AdminProjectsPage = () => {
   const { authFetch } = useAuthContext()
@@ -62,158 +62,193 @@ export const AdminProjectsPage = () => {
         </Link>
       </div>
 
-      {loading && <SkeletonTable rows={4} />}
+      {loading && (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+        </div>
+      )}
       {error && <p className="text-sm" style={{ color: '#f87171' }}>{error}</p>}
 
       {!loading && !error && (
-        <div
-          className="rounded-2xl overflow-hidden overflow-x-auto"
-          style={{ border: '1px solid var(--border)', background: 'var(--surface-card-solid)' }}
-        >
+        <>
           {projects.length === 0 ? (
-            <div className="py-16 text-center" style={{ color: 'var(--text-muted)' }}>
+            <div
+              className="py-16 text-center rounded-2xl"
+              style={{ border: '1px solid var(--border)', color: 'var(--text-muted)' }}
+            >
               Aucun projet. <Link to="/admin/projects/new" style={{ color: 'var(--color-brand)' }}>Créez-en un →</Link>
             </div>
           ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                  {['Statut', 'Titre', 'Stack', 'Liens', 'Actions'].map(h => (
-                    <th
-                      key={h}
-                      className="px-5 py-3 text-left font-medium"
-                      style={{ color: 'var(--text-muted)' }}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {projects.map((project, i) => (
-                  <tr
+            <>
+              {/* Vue mobile — cartes */}
+              <div className="flex flex-col gap-3 md:hidden">
+                {projects.map(project => (
+                  <div
                     key={project.id}
-                    className="transition-colors duration-100"
-                    style={{
-                      borderBottom: i < projects.length - 1 ? '1px solid var(--border)' : 'none',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-alt)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                    className="p-4 rounded-2xl flex flex-col gap-3"
+                    style={{ background: 'var(--surface-card-solid)', border: '1px solid var(--border)' }}
                   >
-                    {/* Statut */}
-                    <td className="px-5 py-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-sm truncate" style={{ color: 'var(--text)' }}>{project.title}</p>
+                        <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--text-muted)' }}>{project.description}</p>
+                      </div>
                       <button
                         onClick={() => handleToggleActive(project)}
-                        className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full transition-opacity hover:opacity-70"
+                        className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full shrink-0 transition-opacity hover:opacity-70"
                         style={{
                           background: project.is_active ? '#22c55e22' : 'var(--surface-alt)',
                           color: project.is_active ? '#22c55e' : 'var(--text-muted)',
                           border: `1px solid ${project.is_active ? '#22c55e44' : 'var(--border)'}`,
                         }}
                       >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ background: project.is_active ? '#22c55e' : 'var(--text-muted)' }}
-                        />
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: project.is_active ? '#22c55e' : 'var(--text-muted)' }} />
                         {project.is_active ? 'Visible' : 'Masqué'}
                       </button>
-                    </td>
+                    </div>
 
-                    {/* Titre */}
-                    <td className="px-5 py-4">
-                      <span className="font-semibold" style={{ color: 'var(--text)' }}>
-                        {project.title}
-                      </span>
-                      <p
-                        className="text-xs mt-0.5 max-w-xs truncate"
-                        style={{ color: 'var(--text-muted)' }}
-                      >
-                        {project.description}
-                      </p>
-                    </td>
-
-                    {/* Stack */}
-                    <td className="px-5 py-4">
-                      <div className="flex flex-wrap gap-1 max-w-50">
+                    {project.stack.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
                         {project.stack.slice(0, 4).map(tech => (
-                          <span
-                            key={tech}
-                            className="text-xs px-2 py-0.5 rounded-full"
-                            style={{
-                              background: 'var(--color-brand-glow)',
-                              color: 'var(--color-brand)',
-                            }}
-                          >
+                          <span key={tech} className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'var(--color-brand-glow)', color: 'var(--color-brand)' }}>
                             {tech}
                           </span>
                         ))}
-                        {project.stack.length > 4 && (
-                          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                            +{project.stack.length - 4}
-                          </span>
-                        )}
+                        {project.stack.length > 4 && <span className="text-xs" style={{ color: 'var(--text-muted)' }}>+{project.stack.length - 4}</span>}
                       </div>
-                    </td>
+                    )}
 
-                    {/* Liens */}
-                    <td className="px-5 py-4">
-                      <div className="flex gap-2">
-                        {project.github_url && (
-                          <a
-                            href={project.github_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-xs px-2 py-1 rounded-lg transition-opacity hover:opacity-70"
-                            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-                          >
-                            GitHub
-                          </a>
-                        )}
-                        {project.live_url && (
-                          <a
-                            href={project.live_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-xs px-2 py-1 rounded-lg transition-opacity hover:opacity-70"
-                            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-                          >
-                            Live
-                          </a>
-                        )}
-                        {!project.github_url && !project.live_url && (
-                          <span style={{ color: 'var(--text-muted)' }}>—</span>
-                        )}
-                      </div>
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-2">
-                        <Link
-                          to={`/admin/projects/${project.id}/edit`}
-                          className="text-xs px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-70"
-                          style={{
-                            background: 'var(--color-brand-glow)',
-                            color: 'var(--color-brand)',
-                          }}
-                        >
-                          Éditer
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(project.id, project.title)}
-                          className="text-xs px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-70"
-                          style={{ border: '1px solid var(--border)', color: '#f87171' }}
-                        >
-                          Supprimer
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Link
+                        to={`/admin/projects/${project.id}/edit`}
+                        className="text-xs px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-70"
+                        style={{ background: 'var(--color-brand-glow)', color: 'var(--color-brand)' }}
+                      >
+                        Éditer
+                      </Link>
+                      {project.github_url && (
+                        <a href={project.github_url} target="_blank" rel="noreferrer"
+                          className="text-xs px-2 py-1.5 rounded-lg transition-opacity hover:opacity-70"
+                          style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                          GitHub
+                        </a>
+                      )}
+                      {project.live_url && (
+                        <a href={project.live_url} target="_blank" rel="noreferrer"
+                          className="text-xs px-2 py-1.5 rounded-lg transition-opacity hover:opacity-70"
+                          style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                          Live
+                        </a>
+                      )}
+                      <button
+                        onClick={() => handleDelete(project.id, project.title)}
+                        className="text-xs px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-70 ml-auto"
+                        style={{ border: '1px solid var(--border)', color: '#f87171' }}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+
+              {/* Vue desktop — table */}
+              <div
+                className="hidden md:block rounded-2xl overflow-hidden"
+                style={{ border: '1px solid var(--border)', background: 'var(--surface-card-solid)' }}
+              >
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      {['Statut', 'Titre', 'Stack', 'Liens', 'Actions'].map(h => (
+                        <th key={h} className="px-5 py-3 text-left font-medium" style={{ color: 'var(--text-muted)' }}>
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map((project, i) => (
+                      <tr
+                        key={project.id}
+                        className="transition-colors duration-100"
+                        style={{ borderBottom: i < projects.length - 1 ? '1px solid var(--border)' : 'none' }}
+                        onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-alt)')}
+                        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                      >
+                        <td className="px-5 py-4">
+                          <button
+                            onClick={() => handleToggleActive(project)}
+                            className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full transition-opacity hover:opacity-70"
+                            style={{
+                              background: project.is_active ? '#22c55e22' : 'var(--surface-alt)',
+                              color: project.is_active ? '#22c55e' : 'var(--text-muted)',
+                              border: `1px solid ${project.is_active ? '#22c55e44' : 'var(--border)'}`,
+                            }}
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ background: project.is_active ? '#22c55e' : 'var(--text-muted)' }} />
+                            {project.is_active ? 'Visible' : 'Masqué'}
+                          </button>
+                        </td>
+                        <td className="px-5 py-4">
+                          <span className="font-semibold" style={{ color: 'var(--text)' }}>{project.title}</span>
+                          <p className="text-xs mt-0.5 max-w-xs truncate" style={{ color: 'var(--text-muted)' }}>{project.description}</p>
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex flex-wrap gap-1 max-w-50">
+                            {project.stack.slice(0, 4).map(tech => (
+                              <span key={tech} className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'var(--color-brand-glow)', color: 'var(--color-brand)' }}>
+                                {tech}
+                              </span>
+                            ))}
+                            {project.stack.length > 4 && <span className="text-xs" style={{ color: 'var(--text-muted)' }}>+{project.stack.length - 4}</span>}
+                          </div>
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex gap-2">
+                            {project.github_url && (
+                              <a href={project.github_url} target="_blank" rel="noreferrer"
+                                className="text-xs px-2 py-1 rounded-lg transition-opacity hover:opacity-70"
+                                style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                                GitHub
+                              </a>
+                            )}
+                            {project.live_url && (
+                              <a href={project.live_url} target="_blank" rel="noreferrer"
+                                className="text-xs px-2 py-1 rounded-lg transition-opacity hover:opacity-70"
+                                style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                                Live
+                              </a>
+                            )}
+                            {!project.github_url && !project.live_url && <span style={{ color: 'var(--text-muted)' }}>—</span>}
+                          </div>
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-2">
+                            <Link
+                              to={`/admin/projects/${project.id}/edit`}
+                              className="text-xs px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-70"
+                              style={{ background: 'var(--color-brand-glow)', color: 'var(--color-brand)' }}
+                            >
+                              Éditer
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(project.id, project.title)}
+                              className="text-xs px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-70"
+                              style={{ border: '1px solid var(--border)', color: '#f87171' }}
+                            >
+                              Supprimer
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
-        </div>
+        </>
       )}
     </div>
   )
