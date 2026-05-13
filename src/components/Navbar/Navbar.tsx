@@ -25,7 +25,7 @@ export const Navbar = () => {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        backgroundColor: scrolled ? 'rgba(5,5,8,0.85)' : 'rgba(5,5,8,0.35)',
+        backgroundColor: scrolled ? 'rgba(5,5,8,0.15)' : 'rgba(5,5,8,0.25)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',

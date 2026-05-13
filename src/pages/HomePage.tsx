@@ -1,4 +1,4 @@
-import { Background, Navbar } from '@/components'
+import { Background, Navbar, Marquee } from '@/components'
 import { Hero, Skills, Projects, Experience, Contact } from '@/sections'
 
 export const HomePage = () => {
@@ -8,6 +8,7 @@ export const HomePage = () => {
       <Navbar />
       <main className="pt-16">
         <Hero />
+        <Marquee />
         <Skills />
         <Projects />
         <Experience />

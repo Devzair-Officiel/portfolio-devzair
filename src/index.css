@@ -101,6 +101,11 @@ h1, h2, h3 {
 .orb-2 { animation: orb-float-2 22s ease-in-out infinite; }
 .orb-3 { animation: orb-float-3 26s ease-in-out infinite; }
 
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* ══════════════════════════════════════════
    GRADIENT TEXT
 ══════════════════════════════════════════ */

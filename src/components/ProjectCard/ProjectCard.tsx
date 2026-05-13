@@ -47,6 +47,26 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6' }: Props) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Gradient border animé au hover */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          inset: '-1px',
+          borderRadius: '19px',
+          padding: '1.5px',
+          background: `conic-gradient(from 0deg, ${accentColor}, #06b6d4, #f43f5e, ${accentColor})`,
+          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          maskComposite: 'exclude',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+        }}
+        animate={hovered ? { rotate: 360, opacity: 1 } : { rotate: 0, opacity: 0 }}
+        transition={hovered
+          ? { rotate: { duration: 3, repeat: Infinity, ease: 'linear' }, opacity: { duration: 0.3 } }
+          : { opacity: { duration: 0.3 } }
+        }
+      />
+
       {/* Accent glow on hover */}
       {hovered && (
         <div

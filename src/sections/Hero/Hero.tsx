@@ -5,22 +5,67 @@ import { api } from '@/utils/api'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
-const AnimatedTitle = ({ text, className, style }: { text: string; className?: string; style?: React.CSSProperties }) => {
-  const words = text.split(' ')
+const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&'
+
+const ScrambleTitle = ({
+  text,
+  className,
+  style,
+  delay = 0,
+}: {
+  text: string
+  className?: string
+  style?: React.CSSProperties
+  delay?: number
+}) => {
+  const [chars, setChars] = useState<string[]>(() =>
+    text.split('').map(c => (c === ' ' ? ' ' : CHARSET[Math.floor(Math.random() * CHARSET.length)]))
+  )
+
+  useEffect(() => {
+    let revealed = 0
+    let tick = 0
+    let rafId: number
+
+    const animate = () => {
+      tick++
+      if (tick % 4 === 0 && revealed < text.length) revealed++
+
+      setChars(
+        text.split('').map((c, i) => {
+          if (c === ' ') return ' '
+          if (i < revealed) return c
+          return CHARSET[Math.floor(Math.random() * CHARSET.length)]
+        })
+      )
+
+      if (revealed < text.length) {
+        rafId = requestAnimationFrame(animate)
+      } else {
+        setChars(text.split(''))
+      }
+    }
+
+    const timeout = setTimeout(() => {
+      rafId = requestAnimationFrame(animate)
+    }, delay * 1000)
+
+    return () => {
+      clearTimeout(timeout)
+      cancelAnimationFrame(rafId)
+    }
+  }, [text, delay])
+
   return (
-    <span className={className} style={style}>
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          className="inline-block mr-[0.25em]"
-          initial={{ opacity: 0, y: 60, skewY: 4 }}
-          animate={{ opacity: 1, y: 0, skewY: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.1 }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </span>
+    <motion.span
+      className={className}
+      style={{ display: 'block', ...style }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay }}
+    >
+      {chars.join('')}
+    </motion.span>
   )
 }
 
@@ -61,14 +106,23 @@ export const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <img
-            src={logoSrc}
-            alt="devZair logo"
-            width={40}
-            height={40}
-            className="rounded-xl"
-            style={{ boxShadow: '0 0 20px rgba(139,92,246,0.5)' }}
-          />
+          <div style={{ position: 'relative', padding: '2px', borderRadius: '14px', display: 'inline-flex', overflow: 'hidden' }}>
+            <motion.div
+              style={{
+                position: 'absolute', inset: 0, borderRadius: '14px',
+                background: 'conic-gradient(from 0deg, #8b5cf6, #06b6d4, #f43f5e, #8b5cf6)',
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            />
+            <img
+              src={logoSrc}
+              alt="devZair logo"
+              width={40}
+              height={40}
+              style={{ position: 'relative', borderRadius: '12px', display: 'block' }}
+            />
+          </div>
           <span className="section-label">devZair · Full Stack Dev</span>
         </motion.div>
 
@@ -78,11 +132,12 @@ export const Hero = () => {
             className="font-bold leading-[0.95] tracking-tight"
             style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem,10vw,8rem)' }}
           >
-            <AnimatedTitle text="Aurélien" className="gradient-text-alt block" />
-            <AnimatedTitle
+            <ScrambleTitle text="Aurélien" className="gradient-text-alt" delay={0.2} />
+            <ScrambleTitle
               text="Boudon"
-              className="gradient-text block"
+              className="gradient-text"
               style={{ marginTop: '0.05em' }}
+              delay={0.5}
             />
           </h1>
         </div>
@@ -180,21 +235,6 @@ export const Hero = () => {
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 flex flex-col items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-      >
-        <span className="section-label text-[10px]">scroll</span>
-        <motion.div
-          className="w-px h-10"
-          style={{ background: 'linear-gradient(to bottom, rgba(139,92,246,0.6), transparent)' }}
-          animate={{ scaleY: [1, 0.4, 1] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
     </section>
   )
 }
