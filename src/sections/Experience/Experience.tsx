@@ -1,9 +1,7 @@
-import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExperiences } from '@/hooks'
-
-const DOT_COLORS = ['#a78bfa', '#22d3ee', '#f472b6', '#c084fc']
 
 export const Experience = () => {
   const { t, i18n } = useTranslation()
@@ -13,132 +11,113 @@ export const Experience = () => {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start 0.8', 'end 0.3'],
+    offset: ['start 0.8', 'end 0.2'],
   })
-  const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
+
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
-    <section id="experience" className="py-24 px-6 max-w-5xl mx-auto">
-      {/* Header */}
+    <section id="experience" className="py-32 px-6 max-w-4xl mx-auto">
       <motion.div
-        className="flex flex-col gap-4 mb-12"
-        initial={{ opacity: 0, y: 20 }}
+        className="mb-20 text-center"
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.55 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <span className="section-label">// experience</span>
+        <p className="section-label mb-4">{lang === 'en' ? 'Career' : 'Parcours'}</p>
         <h2
-          className="grad-text-alt"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
-            fontWeight: 700,
-            letterSpacing: '-0.02em',
-            lineHeight: 1.15,
-          }}
+          className="text-4xl sm:text-5xl font-bold tracking-tight"
+          style={{ fontFamily: 'var(--font-display)' }}
         >
-          {t('experience.title')}
+          <span className="gradient-text">{t('experience.title')}</span>
         </h2>
       </motion.div>
 
-      {/* Timeline */}
-      <div ref={containerRef} className="relative pl-10">
-        {/* Track */}
-        <div className="timeline-track" />
-        {/* Fill animé au scroll */}
+      <div ref={containerRef} className="relative">
+        {/* Ligne verticale track */}
+        <div
+          className="absolute left-[19px] top-0 bottom-0 w-px"
+          style={{ background: 'var(--border)' }}
+        />
+        {/* Ligne animée au scroll */}
         <motion.div
-          className="timeline-fill"
-          style={{ scaleY: lineScaleY }}
+          className="absolute left-[19px] top-0 w-px origin-top"
+          style={{
+            height: lineHeight,
+            background: 'linear-gradient(to bottom, #8b5cf6, #06b6d4, #f43f5e)',
+          }}
         />
 
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-0">
           {experiences.map((exp, idx) => {
             const role = lang === 'en' ? exp.role_en : exp.role_fr
             const description = lang === 'en' ? exp.description_en : exp.description_fr
-            const color = DOT_COLORS[idx % DOT_COLORS.length]
+            const dotColors = ['#8b5cf6', '#06b6d4', '#f43f5e', '#f59e0b']
+            const dotColor = dotColors[idx % dotColors.length]
 
             return (
               <motion.div
                 key={exp.id}
-                className="relative"
-                initial={{ opacity: 0, x: 20 }}
+                className="relative pl-14 pb-14 last:pb-0"
+                initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: idx * 0.07 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
               >
-                {/* Dot sur la timeline */}
+                {/* Dot */}
                 <div
+                  className="absolute left-0 top-1 w-[38px] h-[38px] rounded-full flex items-center justify-center"
                   style={{
-                    position: 'absolute',
-                    left: '-2.75rem',
-                    top: '6px',
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    backgroundColor: color,
-                    boxShadow: `0 0 10px ${color}60`,
-                    border: '2px solid var(--bg)',
-                    zIndex: 1,
+                    background: `${dotColor}18`,
+                    border: `2px solid ${dotColor}50`,
+                    boxShadow: `0 0 16px ${dotColor}30`,
                   }}
-                />
+                >
+                  <div
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ backgroundColor: dotColor, boxShadow: `0 0 8px ${dotColor}` }}
+                  />
+                </div>
 
                 {/* Card */}
-                <div className="glass-card p-6 flex flex-col gap-4">
-                  {/* Header */}
-                  <div className="flex flex-wrap items-start justify-between gap-2">
+                <div
+                  className="glass-card p-6 flex flex-col gap-4"
+                  style={{ borderLeft: `2px solid ${dotColor}30` }}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div>
                       <h3
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: '17px',
-                          fontWeight: 600,
-                          color: 'var(--text)',
-                          letterSpacing: '-0.01em',
-                        }}
+                        className="text-base font-bold mb-1"
+                        style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
                       >
                         {role}
                       </h3>
-                      <p
-                        style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '14px',
-                          color,
-                          marginTop: '2px',
-                        }}
-                      >
+                      <p className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
                         {exp.company}
                       </p>
                     </div>
                     <span
+                      className="self-start shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap"
                       style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '12px',
-                        color: 'var(--text-muted)',
-                        whiteSpace: 'nowrap',
+                        background: `${dotColor}12`,
+                        border: `1px solid ${dotColor}30`,
+                        color: dotColor,
                       }}
                     >
                       {exp.period.replace("Aujourd'hui", t('experience.present'))}
                     </span>
                   </div>
 
-                  {/* Description */}
-                  <ul className="flex flex-col gap-2">
+                  <ul className="flex flex-col gap-2.5 mt-1">
                     {description.map((point, i) => (
-                      <li key={i} className="flex gap-3 text-sm" style={{ lineHeight: 1.7 }}>
-                        <span
-                          style={{
-                            width: '4px',
-                            height: '4px',
-                            borderRadius: '50%',
-                            backgroundColor: color,
-                            flexShrink: 0,
-                            marginTop: '9px',
-                          }}
-                        />
-                        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-sans)' }}>
-                          {point}
-                        </span>
+                      <li
+                        key={i}
+                        className="flex gap-3 text-sm leading-relaxed"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        <span style={{ color: dotColor, flexShrink: 0, marginTop: '2px', fontSize: '10px' }}>◆</span>
+                        {point}
                       </li>
                     ))}
                   </ul>

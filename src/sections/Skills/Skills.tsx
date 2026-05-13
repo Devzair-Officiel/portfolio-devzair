@@ -6,10 +6,10 @@ import { api, type ApiCategory } from '@/utils/api'
 import type { SkillType } from '@/types'
 
 const STATIC_CATEGORIES: ApiCategory[] = [
-  { id: 1, key: 'frontend', label_fr: 'Frontend',         label_en: 'Frontend',       accent: '#a78bfa', order: 0 },
-  { id: 2, key: 'backend',  label_fr: 'Backend',          label_en: 'Backend',        accent: '#22d3ee', order: 1 },
-  { id: 3, key: 'devops',   label_fr: 'DevOps & Outils',  label_en: 'DevOps & Tools', accent: '#f472b6', order: 2 },
-  { id: 4, key: 'learning', label_fr: 'En apprentissage', label_en: 'Learning',       accent: '#c084fc', order: 3 },
+  { id: 1, key: 'frontend', label_fr: 'Frontend',         label_en: 'Frontend',       accent: '#818cf8', order: 0 },
+  { id: 2, key: 'backend',  label_fr: 'Backend',          label_en: 'Backend',        accent: '#34d399', order: 1 },
+  { id: 3, key: 'devops',   label_fr: 'DevOps & Outils',  label_en: 'DevOps & Tools', accent: '#f59e0b', order: 2 },
+  { id: 4, key: 'learning', label_fr: 'En apprentissage', label_en: 'Learning',       accent: '#c4b5fd', order: 3 },
 ]
 
 export const Skills = () => {
@@ -28,34 +28,25 @@ export const Skills = () => {
   }, [])
 
   return (
-    <section id="skills" className="py-24 px-6 max-w-5xl mx-auto">
-      {/* Header */}
+    <section id="skills" className="py-32 px-6 max-w-6xl mx-auto">
       <motion.div
-        className="flex flex-col gap-4 mb-12"
-        initial={{ opacity: 0, y: 20 }}
+        className="mb-16 text-center"
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.55 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <span className="section-label">
-          {lang === 'en' ? '// skills' : '// compétences'}
-        </span>
+        <p className="section-label mb-4">Stack technique</p>
         <h2
-          className="grad-text-alt"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
-            fontWeight: 700,
-            letterSpacing: '-0.02em',
-            lineHeight: 1.15,
-          }}
+          className="text-4xl sm:text-5xl font-bold tracking-tight"
+          style={{ fontFamily: 'var(--font-display)' }}
         >
-          {lang === 'en' ? 'My stack' : 'Ma stack'}
+          <span className="gradient-text-alt">{lang === 'en' ? 'What' : 'Ce que'}</span>{' '}
+          <span style={{ color: 'var(--text)' }}>{lang === 'en' ? 'I master' : 'je maîtrise'}</span>
         </h2>
       </motion.div>
 
-      {/* Grille de cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {categories.map(({ key, label_fr, label_en, accent }, idx) => {
           const label = lang === 'en' ? label_en : label_fr
           const catSkills = skillList.filter(s => s.category === key)
@@ -63,65 +54,48 @@ export const Skills = () => {
           return (
             <motion.div
               key={key}
-              className="glass-card p-6 flex flex-col gap-5"
-              initial={{ opacity: 0, y: 24 }}
+              className="glass-card p-7 flex flex-col gap-5"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: idx * 0.09 }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: idx * 0.1 }}
             >
-              {/* Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      backgroundColor: accent,
-                      boxShadow: `0 0 8px ${accent}60`,
-                      flexShrink: 0,
-                    }}
+                    className="w-2 h-8 rounded-full"
+                    style={{ background: `linear-gradient(to bottom, ${accent}, ${accent}44)` }}
                   />
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontWeight: 600,
-                      fontSize: '15px',
-                      color: 'var(--text)',
-                    }}
+                  <h3
+                    className="text-sm font-bold tracking-wide uppercase"
+                    style={{ fontFamily: 'var(--font-display)', color: accent }}
                   >
                     {label}
-                  </span>
+                  </h3>
                 </div>
                 <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '11px',
-                    color: 'var(--text-dim)',
-                  }}
+                  className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                  style={{ background: `${accent}15`, color: accent, border: `1px solid ${accent}30` }}
                 >
                   {catSkills.length}
                 </span>
               </div>
 
-              {/* Skills */}
               <div className="flex flex-wrap gap-2">
                 {catSkills.map(skill => (
                   <motion.span
                     key={skill.name}
-                    className="px-3 py-1.5 text-xs rounded-lg cursor-default"
+                    className="px-3.5 py-1.5 rounded-full text-xs font-medium cursor-default"
                     style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontWeight: 500,
-                      backgroundColor: 'var(--bg)',
+                      backgroundColor: 'var(--surface)',
                       border: '1px solid var(--border)',
                       color: 'var(--text-muted)',
                     }}
                     whileHover={{
-                      backgroundColor: `${accent}14`,
-                      borderColor: `${accent}40`,
+                      backgroundColor: `${accent}15`,
+                      borderColor: `${accent}50`,
                       color: accent,
-                      y: -2,
+                      scale: 1.05,
                     }}
                     transition={{ duration: 0.15 }}
                   >

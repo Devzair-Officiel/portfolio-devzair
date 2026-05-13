@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { useAppContext } from '@/context/AppContext'
 
 const NAV_LINKS = [
-  { key: 'skills',     href: '#skills',     label_fr: 'Compétences', label_en: 'Skills'     },
-  { key: 'projects',   href: '#projects',   label_fr: 'Projets',     label_en: 'Projects'   },
-  { key: 'experience', href: '#experience', label_fr: 'Expérience',  label_en: 'Experience' },
-  { key: 'contact',    href: '#contact',    label_fr: 'Contact',     label_en: 'Contact'    },
+  { key: 'skills',     href: '#skills' },
+  { key: 'projects',   href: '#projects' },
+  { key: 'experience', href: '#experience' },
+  { key: 'contact',    href: '#contact' },
 ] as const
 
 export const Navbar = () => {
@@ -16,7 +16,7 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 30)
+    const handler = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
@@ -25,45 +25,46 @@ export const Navbar = () => {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        backgroundColor: scrolled ? 'color-mix(in srgb, var(--bg) 85%, transparent)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+        backgroundColor: scrolled ? 'rgba(5,5,8,0.85)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
       }}
     >
       <div className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
         {/* Logo */}
-        <a
-          href="#hero"
-          aria-label="devZair"
-          className="flex items-center gap-2"
-          style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '16px' }}
-        >
-          <span className="grad-text">devZair</span>
+        <a href="#hero" aria-label="devZair" className="flex items-center gap-2.5 group">
+          <img
+            src="/devzair.png"
+            alt="devZair"
+            width={32}
+            height={32}
+            className="rounded-lg transition-all duration-300 group-hover:shadow-[0_0_16px_rgba(139,92,246,0.6)]"
+          />
+          <span
+            className="text-sm font-semibold hidden sm:block"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--text)' }}
+          >
+            devZair
+          </span>
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map(link => (
             <a
               key={link.key}
               href={link.href}
-              className="px-4 py-2 rounded-lg text-sm transition-all duration-150"
-              style={{
-                fontFamily: 'var(--font-sans)',
-                color: 'var(--text-muted)',
-                fontWeight: 400,
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.color = 'var(--text)'
-                e.currentTarget.style.backgroundColor = 'var(--acc-dim)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.color = 'var(--text-muted)'
-                e.currentTarget.style.backgroundColor = 'transparent'
-              }}
+              className="text-sm font-medium transition-all duration-200 relative group"
+              style={{ color: 'var(--text-muted)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
             >
-              {lang === 'fr' ? link.label_fr : link.label_en}
+              {t(`nav.${link.key}`)}
+              <span
+                className="absolute -bottom-0.5 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                style={{ background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)' }}
+              />
             </a>
           ))}
         </nav>
@@ -72,19 +73,15 @@ export const Navbar = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={toggleLang}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--text-muted)',
-              border: '1px solid var(--border-mid)',
-            }}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer"
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
             onMouseEnter={e => {
-              e.currentTarget.style.color = 'var(--acc)'
-              e.currentTarget.style.borderColor = 'var(--border-acc)'
+              e.currentTarget.style.color = 'var(--text)'
+              e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'
             }}
             onMouseLeave={e => {
               e.currentTarget.style.color = 'var(--text-muted)'
-              e.currentTarget.style.borderColor = 'var(--border-mid)'
+              e.currentTarget.style.borderColor = 'var(--border)'
             }}
             aria-label={t('nav.lang_switch')}
           >
@@ -93,15 +90,15 @@ export const Navbar = () => {
 
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg transition-all duration-150 cursor-pointer"
-            style={{ color: 'var(--text-muted)', border: '1px solid var(--border-mid)' }}
+            className="p-2 rounded-lg transition-all duration-200 cursor-pointer"
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
             onMouseEnter={e => {
-              e.currentTarget.style.color = 'var(--acc)'
-              e.currentTarget.style.borderColor = 'var(--border-acc)'
+              e.currentTarget.style.color = 'var(--text)'
+              e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'
             }}
             onMouseLeave={e => {
               e.currentTarget.style.color = 'var(--text-muted)'
-              e.currentTarget.style.borderColor = 'var(--border-mid)'
+              e.currentTarget.style.borderColor = 'var(--border)'
             }}
             aria-label={theme === 'dark' ? t('nav.theme_dark') : t('nav.theme_light')}
           >
@@ -117,37 +114,40 @@ export const Navbar = () => {
           </button>
 
           <button
-            className="md:hidden p-2 rounded-lg cursor-pointer"
-            style={{ color: 'var(--text-muted)', border: '1px solid var(--border-mid)' }}
+            className="md:hidden p-2 rounded-lg transition-all duration-200 cursor-pointer"
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
             onClick={() => setMenuOpen(p => !p)}
             aria-label="Menu"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              {menuOpen
-                ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
-                : <><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></>
-              }
-            </svg>
+            {menuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
 
       {menuOpen && (
         <nav
-          className="md:hidden flex flex-col px-6 pb-5 gap-1"
-          style={{ borderTop: '1px solid var(--border)', backgroundColor: 'var(--bg-raised)' }}
+          className="md:hidden flex flex-col px-6 pb-4 gap-1"
+          style={{ borderTop: '1px solid var(--border)', background: 'rgba(5,5,8,0.95)' }}
         >
           {NAV_LINKS.map(link => (
             <a
               key={link.key}
               href={link.href}
-              className="py-3 text-sm transition-colors duration-150"
-              style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-sans)' }}
+              className="text-sm font-medium py-3 transition-colors duration-200"
+              style={{ color: 'var(--text-muted)' }}
               onClick={() => setMenuOpen(false)}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--acc)')}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
               onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
             >
-              {lang === 'fr' ? link.label_fr : link.label_en}
+              {t(`nav.${link.key}`)}
             </a>
           ))}
         </nav>
