@@ -29,12 +29,12 @@ export const Experience = () => {
       >
         <span className="section-label">// experience</span>
         <h2
+          className="grad-text-alt"
           style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
             fontWeight: 700,
             letterSpacing: '-0.02em',
-            color: 'var(--text)',
             lineHeight: 1.15,
           }}
         >

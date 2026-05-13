@@ -87,13 +87,23 @@ export const Hero = () => {
               fontWeight: 700,
               lineHeight: 0.95,
               letterSpacing: '-0.03em',
-              color: 'var(--text)',
             }}
           >
-            <WordReveal text="Aurélien" delay={0.1} />
+            {/* Ligne 1 : blanc */}
+            <WordReveal
+              text="Aurélien"
+              delay={0.1}
+              style={{ color: 'var(--text)' }}
+            />
             <br />
-            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.15em' }}>
-              <WordReveal text="Boudon" delay={0.22} style={{ display: 'inline-flex' }} />
+            {/* Ligne 2 : gradient */}
+            <span style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+              <WordReveal
+                text="Boudon"
+                delay={0.22}
+                className="grad-text"
+                style={{ display: 'inline-flex' }}
+              />
               <motion.span
                 className="grad-text"
                 style={{

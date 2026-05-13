@@ -24,7 +24,7 @@ export const Background = () => {
         style={{
           width: '700px', height: '700px',
           top: '-200px', left: '-150px',
-          background: 'radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.35) 0%, transparent 65%)',
         }}
       />
 
@@ -34,7 +34,7 @@ export const Background = () => {
         style={{
           width: '600px', height: '600px',
           bottom: '-150px', right: '-100px',
-          background: 'radial-gradient(circle, rgba(34,211,238,0.15) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(34,211,238,0.28) 0%, transparent 65%)',
         }}
       />
 
@@ -44,7 +44,7 @@ export const Background = () => {
         style={{
           width: '450px', height: '450px',
           top: '35%', left: '-80px',
-          background: 'radial-gradient(circle, rgba(244,114,182,0.12) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(244,114,182,0.22) 0%, transparent 65%)',
         }}
       />
 
@@ -54,7 +54,7 @@ export const Background = () => {
         style={{
           width: '380px', height: '380px',
           top: '-60px', right: '-60px',
-          background: 'radial-gradient(circle, rgba(192,132,252,0.13) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(192,132,252,0.25) 0%, transparent 65%)',
         }}
       />
 
