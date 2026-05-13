@@ -17,12 +17,16 @@
 :root {
   --bg: #050508;
   --surface: rgba(255,255,255,0.03);
+  --surface-alt: #0f0f18;
   --surface-hover: rgba(255,255,255,0.06);
   --border: rgba(255,255,255,0.07);
   --border-bright: rgba(255,255,255,0.15);
   --text: #f8f8ff;
   --text-muted: #6b7280;
   --text-dim: #2a2a3a;
+
+  --color-brand: #7c6fff;
+  --color-brand-glow: rgba(124,111,255,0.12);
 
   /* Mesh gradient orbs */
   --orb-1: #7c3aed;
@@ -34,18 +38,22 @@
    LIGHT MODE
 ══════════════════════════════════════════ */
 .light {
-  --bg: #fafafa;
-  --surface: rgba(0,0,0,0.03);
-  --surface-hover: rgba(0,0,0,0.06);
-  --border: rgba(0,0,0,0.08);
-  --border-bright: rgba(0,0,0,0.2);
+  --bg: #f4f4f8;
+  --surface: rgba(255,255,255,0.85);
+  --surface-alt: #ffffff;
+  --surface-hover: rgba(255,255,255,0.95);
+  --border: rgba(0,0,0,0.1);
+  --border-bright: rgba(0,0,0,0.22);
   --text: #0a0a12;
-  --text-muted: #6b7280;
-  --text-dim: #e5e5e5;
+  --text-muted: #5a6478;
+  --text-dim: #c8cbd4;
 
-  --orb-1: #a78bfa;
-  --orb-2: #22d3ee;
-  --orb-3: #fb7185;
+  --color-brand: #6d5ce8;
+  --color-brand-glow: rgba(109,92,232,0.1);
+
+  --orb-1: #c4b5fd;
+  --orb-2: #67e8f9;
+  --orb-3: #fda4af;
 }
 
 /* ══════════════════════════════════════════
@@ -58,6 +66,11 @@ html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 h1, h2, h3 {
@@ -123,6 +136,13 @@ h1, h2, h3 {
   background-clip: text;
 }
 
+.light .gradient-text-alt {
+  background: linear-gradient(135deg, #1e1b4b 0%, #7c3aed 55%, #0891b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ══════════════════════════════════════════
    GLASS CARD
 ══════════════════════════════════════════ */
@@ -139,6 +159,10 @@ h1, h2, h3 {
   background: var(--surface-hover);
   border-color: var(--border-bright);
   box-shadow: 0 0 0 1px rgba(139,92,246,0.15), 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.light .glass-card:hover {
+  box-shadow: 0 0 0 1px rgba(139,92,246,0.2), 0 8px 24px rgba(0,0,0,0.08);
 }
 
 /* ══════════════════════════════════════════
@@ -159,12 +183,13 @@ h1, h2, h3 {
 .cursor-glow {
   pointer-events: none;
   position: fixed;
+  top: 0;
+  left: 0;
   width: 500px;
   height: 500px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 65%);
-  transform: translate(-50%, -50%);
-  transition: left 0.6s cubic-bezier(0.16,1,0.3,1), top 0.6s cubic-bezier(0.16,1,0.3,1);
+  will-change: transform;
   z-index: 0;
 }
 

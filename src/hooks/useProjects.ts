@@ -8,6 +8,7 @@ interface ApiProject {
   stack: string[]
   github_url: string | null
   live_url: string | null
+  image_url: string | null
   is_active: boolean
 }
 
@@ -39,6 +40,7 @@ export const useProjects = (): UseProjectsResult => {
             stack: p.stack,
             repoUrl: p.github_url ?? undefined,
             liveUrl: p.live_url ?? undefined,
+            imageUrl: p.image_url,
           })),
         )
       })

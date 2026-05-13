@@ -7,11 +7,14 @@ export interface ProjectType {
   stack: string[]
   repoUrl?: string
   liveUrl?: string
+  imageUrl?: string | null
 }
 
 export interface SkillType {
   name: string
   category: 'frontend' | 'backend' | 'devops' | 'learning'
+  icon?: string | null
+  color?: string | null
 }
 
 export interface ExperienceType {

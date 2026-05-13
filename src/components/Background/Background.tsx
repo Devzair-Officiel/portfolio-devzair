@@ -4,13 +4,32 @@ export const Background = () => {
   const glowRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let rafId: number
+    let currentX = window.innerWidth / 2
+    let currentY = window.innerHeight / 2
+    let targetX = currentX
+    let targetY = currentY
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!glowRef.current) return
-      glowRef.current.style.left = `${e.clientX}px`
-      glowRef.current.style.top = `${e.clientY}px`
+      targetX = e.clientX
+      targetY = e.clientY
     }
+
+    const animate = () => {
+      currentX += (targetX - currentX) * 0.12
+      currentY += (targetY - currentY) * 0.12
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate(${currentX - 250}px, ${currentY - 250}px)`
+      }
+      rafId = requestAnimationFrame(animate)
+    }
+
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    rafId = requestAnimationFrame(animate)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      cancelAnimationFrame(rafId)
+    }
   }, [])
 
   return (

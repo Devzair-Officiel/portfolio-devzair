@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ProjectCard } from '@/components'
 import { useProjects } from '@/hooks'
 
-const ACCENT_COLORS = ['#8b5cf6', '#06b6d4', '#f43f5e', '#f59e0b', '#34d399', '#8b5cf6']
+const ACCENT_COLORS = ['#8b5cf6', '#06b6d4', '#f43f5e', '#f59e0b', '#34d399', '#a78bfa']
 
 export const Projects = () => {
   const { t, i18n } = useTranslation()
@@ -11,9 +11,9 @@ export const Projects = () => {
   const { projects, loading, error } = useProjects()
 
   return (
-    <section id="projects" className="py-32 px-6 max-w-6xl mx-auto">
+    <section id="projects" className="py-16 sm:py-32 px-4 sm:px-6 max-w-6xl mx-auto">
       <motion.div
-        className="mb-16 text-center"
+        className="mb-12 sm:mb-16 text-center"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -29,9 +29,9 @@ export const Projects = () => {
       </motion.div>
 
       {loading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3].map(i => (
-            <div key={i} className="glass-card h-64 animate-pulse" />
+            <div key={i} className="rounded-[18px] h-72 animate-pulse" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }} />
           ))}
         </div>
       )}
@@ -43,19 +43,20 @@ export const Projects = () => {
       )}
 
       {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {projects.map((project, idx) => (
             <motion.div
               key={project.id}
               className="h-full"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: idx * 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: idx * 0.08 }}
             >
               <ProjectCard
                 project={project}
                 accentColor={ACCENT_COLORS[idx % ACCENT_COLORS.length]}
+                index={idx}
               />
             </motion.div>
           ))}

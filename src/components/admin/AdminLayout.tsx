@@ -214,14 +214,14 @@ export const AdminLayout = () => {
 
       {/* Sidebar mobile drawer */}
       <aside
-        className={`fixed top-0 left-0 h-full w-72 z-50 md:hidden transition-transform duration-300 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed top-0 left-0 h-full w-[85vw] max-w-xs z-50 md:hidden transition-transform duration-300 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}
         style={{ background: 'var(--surface-alt)', borderRight: '1px solid var(--border)' }}
       >
         <SidebarContent onClose={() => setMenuOpen(false)} />
       </aside>
 
       {/* Main */}
-      <main className="flex-1 md:ml-60 min-h-screen flex flex-col">
+      <main className="flex-1 md:ml-60 min-h-screen flex flex-col min-w-0">
 
         {/* Topbar */}
         <div

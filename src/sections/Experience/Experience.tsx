@@ -17,7 +17,7 @@ export const Experience = () => {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
-    <section id="experience" className="py-32 px-6 max-w-4xl mx-auto">
+    <section id="experience" className="py-16 sm:py-32 px-4 sm:px-6 max-w-4xl mx-auto">
       <motion.div
         className="mb-20 text-center"
         initial={{ opacity: 0, y: 30 }}
@@ -37,12 +37,12 @@ export const Experience = () => {
       <div ref={containerRef} className="relative">
         {/* Ligne verticale track */}
         <div
-          className="absolute left-[19px] top-0 bottom-0 w-px"
+          className="absolute left-4.75 top-0 bottom-0 w-px"
           style={{ background: 'var(--border)' }}
         />
         {/* Ligne animée au scroll */}
         <motion.div
-          className="absolute left-[19px] top-0 w-px origin-top"
+          className="absolute left-4.75 top-0 w-px origin-top"
           style={{
             height: lineHeight,
             background: 'linear-gradient(to bottom, #8b5cf6, #06b6d4, #f43f5e)',
@@ -59,7 +59,7 @@ export const Experience = () => {
             return (
               <motion.div
                 key={exp.id}
-                className="relative pl-14 pb-14 last:pb-0"
+                className="relative pl-12 sm:pl-14 pb-10 sm:pb-14 last:pb-0"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -67,7 +67,7 @@ export const Experience = () => {
               >
                 {/* Dot */}
                 <div
-                  className="absolute left-0 top-1 w-[38px] h-[38px] rounded-full flex items-center justify-center"
+                  className="absolute left-0 top-1 w-9.5 h-9.5 rounded-full flex items-center justify-center"
                   style={{
                     background: `${dotColor}18`,
                     border: `2px solid ${dotColor}50`,
@@ -82,7 +82,7 @@ export const Experience = () => {
 
                 {/* Card */}
                 <div
-                  className="glass-card p-6 flex flex-col gap-4"
+                  className="glass-card p-4 sm:p-6 flex flex-col gap-3 sm:gap-4"
                   style={{ borderLeft: `2px solid ${dotColor}30` }}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">

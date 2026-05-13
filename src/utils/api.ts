@@ -29,6 +29,8 @@ export interface ApiSkill {
   name: string
   category: string
   order: number
+  icon: string | null
+  color: string | null
 }
 
 export interface ApiCategory {
@@ -52,6 +54,7 @@ export interface ApiProject {
   stack: string[]
   github_url: string | null
   live_url: string | null
+  image_url: string | null
   is_active: boolean
   created_at: string
   updated_at: string
@@ -63,6 +66,7 @@ export interface ProjectPayload {
   stack: string[]
   github_url?: string | null
   live_url?: string | null
+  image_url?: string | null
   is_active?: boolean
 }
 
@@ -117,11 +121,11 @@ export const api = {
       return json<ApiSkill[]>(res)
     },
 
-    create: async (authFetch: AuthFetch, name: string, category: string): Promise<ApiSkill> => {
+    create: async (authFetch: AuthFetch, name: string, category: string, icon?: string | null, color?: string | null): Promise<ApiSkill> => {
       const res = await authFetch(`${API_URL}/api/v1/skills/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, category }),
+        body: JSON.stringify({ name, category, icon: icon ?? null, color: color ?? null }),
       })
       return json<ApiSkill>(res)
     },

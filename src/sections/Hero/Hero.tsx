@@ -96,7 +96,7 @@ export const Hero = () => {
       className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden"
     >
       <motion.div
-        className="relative z-10 flex flex-col items-center text-center gap-10"
+        className="relative z-10 flex flex-col items-center text-center gap-6 sm:gap-10"
         style={{ y: yParallax, opacity: opacityFade }}
       >
         {/* Logo + label */}
@@ -130,7 +130,7 @@ export const Hero = () => {
         <div className="flex flex-col gap-2">
           <h1
             className="font-bold leading-[0.95] tracking-tight"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem,10vw,8rem)' }}
+            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.8rem,10vw,8rem)' }}
           >
             <ScrambleTitle text="Aurélien" className="gradient-text-alt" delay={0.2} />
             <ScrambleTitle
@@ -212,7 +212,7 @@ export const Hero = () => {
 
         {/* Stats */}
         <motion.div
-          className="flex gap-8 mt-2"
+          className="flex gap-5 sm:gap-8 mt-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1, duration: 0.6 }}
@@ -224,7 +224,7 @@ export const Hero = () => {
           ].map(stat => (
             <div key={stat.label} className="flex flex-col items-center gap-1">
               <span
-                className="text-2xl font-bold"
+                className="text-xl sm:text-2xl font-bold"
                 style={{ fontFamily: 'var(--font-display)', background: 'linear-gradient(135deg,#a78bfa,#67e8f9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
               >
                 {stat.value}
