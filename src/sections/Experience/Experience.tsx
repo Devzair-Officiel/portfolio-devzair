@@ -1,109 +1,153 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useExperiences } from '@/hooks'
-import { fadeUp, staggerContainer, staggerItem } from '@/utils/animations'
+
+const DOT_COLORS = ['#818cf8', '#67e8f9', '#c084fc', '#fb923c']
 
 export const Experience = () => {
   const { t, i18n } = useTranslation()
   const lang = i18n.language.startsWith('en') ? 'en' : 'fr'
   const experiences = useExperiences()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start 0.8', 'end 0.3'],
+  })
+  const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
-    <section id="experience" className="py-24 px-6 max-w-4xl mx-auto">
+    <section id="experience" className="py-24 px-6 max-w-5xl mx-auto">
+      {/* Header */}
       <motion.div
-        className="text-center mb-16"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
+        className="flex flex-col gap-4 mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.55 }}
       >
-        <p className="text-xs font-semibold tracking-[0.3em] uppercase text-brand mb-3">
-          {t('nav.experience') ?? 'Parcours'}
-        </p>
-        <h2 className="text-4xl sm:text-5xl font-extrabold" style={{ color: 'var(--text)' }}>
+        <span className="section-label">// experience</span>
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+            color: 'var(--text)',
+            lineHeight: 1.15,
+          }}
+        >
           {t('experience.title')}
         </h2>
       </motion.div>
 
-      <motion.div
-        className="relative flex flex-col gap-0"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        <div
-          className="absolute left-3 top-3 bottom-3 w-px"
-          style={{ background: 'linear-gradient(to bottom, #7c6fff66, transparent)' }}
+      {/* Timeline */}
+      <div ref={containerRef} className="relative pl-10">
+        {/* Track */}
+        <div className="timeline-track" />
+        {/* Fill animé au scroll */}
+        <motion.div
+          className="timeline-fill"
+          style={{ scaleY: lineScaleY }}
         />
 
-        {experiences.map(exp => {
-          const role = lang === 'en' ? exp.role_en : exp.role_fr
-          const description = lang === 'en' ? exp.description_en : exp.description_fr
+        <div className="flex flex-col gap-10">
+          {experiences.map((exp, idx) => {
+            const role = lang === 'en' ? exp.role_en : exp.role_fr
+            const description = lang === 'en' ? exp.description_en : exp.description_fr
+            const color = DOT_COLORS[idx % DOT_COLORS.length]
 
-          return (
-            <motion.div
-              key={exp.id}
-              className="relative pl-12 pb-10 last:pb-0"
-              variants={staggerItem}
-            >
-              <div
-                className="absolute left-0 top-1 w-6 h-6 rounded-full flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, #7c6fff, #a78bfa)',
-                  boxShadow: '0 0 12px #7c6fff55',
-                }}
+            return (
+              <motion.div
+                key={exp.id}
+                className="relative"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: idx * 0.07 }}
               >
-                <div className="w-2 h-2 rounded-full bg-white opacity-80" />
-              </div>
+                {/* Dot sur la timeline */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '-2.75rem',
+                    top: '6px',
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: color,
+                    boxShadow: `0 0 10px ${color}60`,
+                    border: '2px solid var(--bg)',
+                    zIndex: 1,
+                  }}
+                />
 
-              <div
-                className="p-6 rounded-2xl transition-all duration-300"
-                style={{
-                  backgroundColor: 'var(--surface-card)',
-                  backdropFilter: 'var(--glass)',
-                  WebkitBackdropFilter: 'var(--glass)',
-                  border: '1px solid var(--border)',
-                }}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
-                  <div>
-                    <h3 className="text-base font-bold mb-1" style={{ color: 'var(--text)' }}>
-                      {role}
-                    </h3>
-                    <p className="text-sm font-semibold" style={{ color: 'var(--text-muted)' }}>
-                      {exp.company}
-                    </p>
-                  </div>
-                  <span
-                    className="text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap self-start"
-                    style={{
-                      background: 'rgba(124,111,255,0.12)',
-                      border: '1px solid rgba(124,111,255,0.28)',
-                      color: '#a78bfa',
-                    }}
-                  >
-                    {exp.period.replace("Aujourd'hui", t('experience.present'))}
-                  </span>
-                </div>
-
-                <ul className="flex flex-col gap-2 mt-4">
-                  {description.map((point, i) => (
-                    <li
-                      key={i}
-                      className="flex gap-2.5 text-sm leading-relaxed"
-                      style={{ color: 'var(--text-muted)' }}
+                {/* Card */}
+                <div className="glass-card p-6 flex flex-col gap-4">
+                  {/* Header */}
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div>
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '17px',
+                          fontWeight: 600,
+                          color: 'var(--text)',
+                          letterSpacing: '-0.01em',
+                        }}
+                      >
+                        {role}
+                      </h3>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '14px',
+                          color,
+                          marginTop: '2px',
+                        }}
+                      >
+                        {exp.company}
+                      </p>
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '12px',
+                        color: 'var(--text-muted)',
+                        whiteSpace: 'nowrap',
+                      }}
                     >
-                      <span className="text-brand shrink-0 mt-0.5">▸</span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          )
-        })}
-      </motion.div>
+                      {exp.period.replace("Aujourd'hui", t('experience.present'))}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <ul className="flex flex-col gap-2">
+                    {description.map((point, i) => (
+                      <li key={i} className="flex gap-3 text-sm" style={{ lineHeight: 1.7 }}>
+                        <span
+                          style={{
+                            width: '4px',
+                            height: '4px',
+                            borderRadius: '50%',
+                            backgroundColor: color,
+                            flexShrink: 0,
+                            marginTop: '9px',
+                          }}
+                        />
+                        <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-sans)' }}>
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
     </section>
   )
 }
