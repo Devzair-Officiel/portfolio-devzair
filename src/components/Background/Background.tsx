@@ -1,73 +1,81 @@
-import { useEffect, useRef } from 'react'
+import { useMotionValue, useSpring, motion } from 'framer-motion'
+import { useEffect } from 'react'
 
 export const Background = () => {
-  const glowRef = useRef<HTMLDivElement>(null)
+  const rawX = useMotionValue(-1000)
+  const rawY = useMotionValue(-1000)
+  const x = useSpring(rawX, { stiffness: 60, damping: 20 })
+  const y = useSpring(rawY, { stiffness: 60, damping: 20 })
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (!glowRef.current) return
-      glowRef.current.style.left = `${e.clientX - 200}px`
-      glowRef.current.style.top  = `${e.clientY - 200}px`
+      rawX.set(e.clientX - 250)
+      rawY.set(e.clientY - 250)
     }
     window.addEventListener('mousemove', handler, { passive: true })
     return () => window.removeEventListener('mousemove', handler)
-  }, [])
+  }, [rawX, rawY])
 
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden" aria-hidden>
-      {/* Orb 1 — indigo, haut gauche */}
+      {/* Orb 1 — violet, haut gauche */}
       <div
         className="orb-1 absolute rounded-full blur-3xl"
         style={{
-          width: '700px',
-          height: '700px',
-          top: '-200px',
-          left: '-150px',
-          background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%)',
+          width: '700px', height: '700px',
+          top: '-200px', left: '-150px',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 65%)',
         }}
       />
 
-      {/* Orb 2 — violet, bas droite */}
+      {/* Orb 2 — cyan, bas droite */}
       <div
         className="orb-2 absolute rounded-full blur-3xl"
         style={{
-          width: '600px',
-          height: '600px',
-          bottom: '-150px',
-          right: '-100px',
-          background: 'radial-gradient(circle, rgba(192,132,252,0.14) 0%, transparent 65%)',
+          width: '600px', height: '600px',
+          bottom: '-150px', right: '-100px',
+          background: 'radial-gradient(circle, rgba(34,211,238,0.15) 0%, transparent 65%)',
         }}
       />
 
-      {/* Orb 3 — cyan, centre */}
+      {/* Orb 3 — rose, milieu gauche */}
       <div
         className="orb-3 absolute rounded-full blur-3xl"
         style={{
-          width: '400px',
-          height: '400px',
-          top: '40%',
-          left: '40%',
-          background: 'radial-gradient(circle, rgba(103,232,249,0.09) 0%, transparent 65%)',
+          width: '450px', height: '450px',
+          top: '35%', left: '-80px',
+          background: 'radial-gradient(circle, rgba(244,114,182,0.12) 0%, transparent 65%)',
         }}
       />
 
-      {/* Grille fine */}
+      {/* Orb 4 — violet clair, haut droite */}
+      <div
+        className="orb-4 absolute rounded-full blur-3xl"
+        style={{
+          width: '380px', height: '380px',
+          top: '-60px', right: '-60px',
+          background: 'radial-gradient(circle, rgba(192,132,252,0.13) 0%, transparent 65%)',
+        }}
+      />
+
+      {/* Grille de points subtile */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(129,140,248,0.04) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
+          backgroundImage: 'radial-gradient(circle, rgba(167,139,250,0.04) 1px, transparent 1px)',
+          backgroundSize: '44px 44px',
         }}
       />
 
-      {/* Cursor glow */}
-      <div
-        ref={glowRef}
-        className="absolute rounded-full blur-3xl transition-[left,top] duration-700 ease-out"
+      {/* Cursor glow — spring fluide */}
+      <motion.div
         style={{
-          width: '400px',
-          height: '400px',
-          background: 'radial-gradient(circle, rgba(129,140,248,0.06) 0%, transparent 60%)',
+          x, y,
+          width: '500px', height: '500px',
+          position: 'absolute',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.07) 0%, transparent 60%)',
+          filter: 'blur(60px)',
           pointerEvents: 'none',
         }}
       />

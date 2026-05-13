@@ -8,7 +8,7 @@ interface Props {
   index: number
 }
 
-const ACCENT_CYCLE = ['#818cf8', '#67e8f9', '#c084fc', '#fb923c', '#f472b6', '#818cf8']
+const ACCENT_CYCLE = ['#a78bfa', '#22d3ee', '#f472b6', '#fbbf24', '#c084fc', '#a78bfa']
 
 export const ProjectCard = ({ project, index }: Props) => {
   const { t } = useTranslation()

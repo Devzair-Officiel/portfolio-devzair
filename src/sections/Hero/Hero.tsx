@@ -5,21 +5,21 @@ import { api } from '@/utils/api'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
-// Reveal mot par mot avec masque overflow hidden
+// Reveal mot par mot — masque overflow + skewY
 const WordReveal = ({ text, delay = 0, className = '', style = {} }: {
   text: string
   delay?: number
   className?: string
   style?: React.CSSProperties
 }) => (
-  <span className={className} style={{ display: 'inline-flex', flexWrap: 'wrap', gap: '0.25em', ...style }}>
+  <span className={className} style={{ display: 'inline-flex', flexWrap: 'wrap', gap: '0.2em', ...style }}>
     {text.split(' ').map((word, i) => (
       <span key={i} style={{ overflow: 'hidden', display: 'inline-block' }}>
         <motion.span
           style={{ display: 'inline-block' }}
-          initial={{ y: '110%', rotate: 3 }}
-          animate={{ y: '0%', rotate: 0 }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.06 }}
+          initial={{ y: '110%', skewY: 4 }}
+          animate={{ y: '0%', skewY: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.07 }}
         >
           {word}
         </motion.span>
@@ -83,35 +83,33 @@ export const Hero = () => {
           <h1
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3rem, 9vw, 7.5rem)',
+              fontSize: 'clamp(3.5rem, 10vw, 8rem)',
               fontWeight: 700,
-              lineHeight: 1.0,
+              lineHeight: 0.95,
               letterSpacing: '-0.03em',
               color: 'var(--text)',
             }}
           >
             <WordReveal text="Aurélien" delay={0.1} />
             <br />
-            <WordReveal
-              text="Boudon"
-              delay={0.2}
-              style={{ display: 'inline-flex' }}
-            />
-            <motion.span
-              className="grad-text"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3rem, 9vw, 7.5rem)',
-                fontWeight: 700,
-                letterSpacing: '-0.03em',
-                marginLeft: '0.25em',
-              }}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-            >
-              .
-            </motion.span>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.15em' }}>
+              <WordReveal text="Boudon" delay={0.22} style={{ display: 'inline-flex' }} />
+              <motion.span
+                className="grad-text"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(3.5rem, 10vw, 8rem)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.03em',
+                  lineHeight: 0.95,
+                }}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                .
+              </motion.span>
+            </span>
           </h1>
         </div>
 

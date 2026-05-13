@@ -10,42 +10,44 @@
    DARK MODE (défaut)
 ══════════════════════════════════════════ */
 :root {
-  --bg:          #070812;
-  --bg-raised:   #0d1226;
-  --bg-card:     rgba(13, 18, 38, 0.7);
-  --border:      rgba(129, 140, 248, 0.1);
-  --border-mid:  rgba(129, 140, 248, 0.2);
-  --border-acc:  rgba(129, 140, 248, 0.4);
+  --bg:          #07080f;
+  --bg-raised:   #0e1020;
+  --bg-card:     rgba(14, 16, 32, 0.75);
+  --border:      rgba(167, 139, 250, 0.12);
+  --border-mid:  rgba(167, 139, 250, 0.22);
+  --border-acc:  rgba(167, 139, 250, 0.45);
   --text:        #f1f5f9;
   --text-muted:  #94a3b8;
-  --text-dim:    #334155;
-  --acc:         #818cf8;   /* indigo-400 */
-  --acc2:        #67e8f9;   /* cyan-300 */
-  --acc3:        #c084fc;   /* purple-400 */
-  --acc-dim:     rgba(129, 140, 248, 0.1);
-  --acc-glow:    0 0 30px rgba(129, 140, 248, 0.25);
-  --grad:        linear-gradient(135deg, #818cf8, #c084fc, #67e8f9);
+  --text-dim:    #2e3554;
+  --acc:         #a78bfa;   /* violet-400 */
+  --acc2:        #22d3ee;   /* cyan-400 */
+  --acc3:        #f472b6;   /* pink-400 */
+  --acc-dim:     rgba(167, 139, 250, 0.1);
+  --acc-glow:    0 0 30px rgba(167, 139, 250, 0.3);
+  --grad:        linear-gradient(135deg, #a78bfa, #22d3ee, #f472b6);
+  --grad-alt:    linear-gradient(135deg, #ffffff, #a78bfa, #22d3ee);
 }
 
 /* ══════════════════════════════════════════
    LIGHT MODE
 ══════════════════════════════════════════ */
 .light {
-  --bg:          #f8f9ff;
+  --bg:          #f8f7ff;
   --bg-raised:   #ffffff;
   --bg-card:     rgba(255, 255, 255, 0.85);
-  --border:      rgba(99, 102, 241, 0.1);
-  --border-mid:  rgba(99, 102, 241, 0.2);
-  --border-acc:  rgba(99, 102, 241, 0.4);
-  --text:        #0f172a;
+  --border:      rgba(139, 92, 246, 0.1);
+  --border-mid:  rgba(139, 92, 246, 0.2);
+  --border-acc:  rgba(139, 92, 246, 0.4);
+  --text:        #0f0e1a;
   --text-muted:  #475569;
-  --text-dim:    #cbd5e1;
-  --acc:         #6366f1;
+  --text-dim:    #c4bfe8;
+  --acc:         #7c3aed;
   --acc2:        #0891b2;
-  --acc3:        #9333ea;
-  --acc-dim:     rgba(99, 102, 241, 0.08);
-  --acc-glow:    0 0 30px rgba(99, 102, 241, 0.15);
-  --grad:        linear-gradient(135deg, #6366f1, #9333ea, #0891b2);
+  --acc3:        #db2777;
+  --acc-dim:     rgba(124, 58, 237, 0.08);
+  --acc-glow:    0 0 30px rgba(124, 58, 237, 0.15);
+  --grad:        linear-gradient(135deg, #7c3aed, #0891b2, #db2777);
+  --grad-alt:    linear-gradient(135deg, #0f0e1a, #7c3aed, #0891b2);
 }
 
 /* ══════════════════════════════════════════
@@ -74,6 +76,13 @@ html {
 ══════════════════════════════════════════ */
 .grad-text {
   background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.grad-text-alt {
+  background: var(--grad-alt);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -198,29 +207,37 @@ html {
    ORB ANIMATIONS (mesh gradient)
 ══════════════════════════════════════════ */
 @keyframes orb-float-1 {
-  0%   { transform: translate(0, 0)    scale(1);    }
+  0%   { transform: translate(0, 0)        scale(1);    }
   33%  { transform: translate(60px, -40px) scale(1.08); }
   66%  { transform: translate(-30px, 50px) scale(0.95); }
-  100% { transform: translate(0, 0)    scale(1);    }
+  100% { transform: translate(0, 0)        scale(1);    }
 }
 
 @keyframes orb-float-2 {
-  0%   { transform: translate(0, 0)    scale(1);    }
-  40%  { transform: translate(-70px, 30px) scale(1.06); }
-  70%  { transform: translate(40px, -60px) scale(0.97); }
-  100% { transform: translate(0, 0)    scale(1);    }
+  0%   { transform: translate(0, 0)         scale(1);    }
+  40%  { transform: translate(-70px, 30px)  scale(1.06); }
+  70%  { transform: translate(40px, -60px)  scale(0.97); }
+  100% { transform: translate(0, 0)         scale(1);    }
 }
 
 @keyframes orb-float-3 {
-  0%   { transform: translate(0, 0)    scale(1);    }
-  30%  { transform: translate(40px, 60px)  scale(1.04); }
-  60%  { transform: translate(-50px, -30px) scale(0.98); }
-  100% { transform: translate(0, 0)    scale(1);    }
+  0%   { transform: translate(0, 0)          scale(1);    }
+  30%  { transform: translate(40px, 60px)    scale(1.04); }
+  60%  { transform: translate(-50px, -30px)  scale(0.98); }
+  100% { transform: translate(0, 0)          scale(1);    }
 }
 
-.orb-1 { animation: orb-float-1 18s ease-in-out infinite; }
-.orb-2 { animation: orb-float-2 22s ease-in-out infinite; }
-.orb-3 { animation: orb-float-3 16s ease-in-out infinite; }
+@keyframes orb-float-4 {
+  0%   { transform: translate(0, 0)          scale(1);    }
+  35%  { transform: translate(-40px, -50px)  scale(1.05); }
+  65%  { transform: translate(55px, 35px)    scale(0.96); }
+  100% { transform: translate(0, 0)          scale(1);    }
+}
+
+.orb-1 { animation: orb-float-1 20s ease-in-out infinite; }
+.orb-2 { animation: orb-float-2 25s ease-in-out infinite; }
+.orb-3 { animation: orb-float-3 18s ease-in-out infinite; }
+.orb-4 { animation: orb-float-4 23s ease-in-out infinite; }
 
 /* ══════════════════════════════════════════
    CURSOR BLINK (prompt)

@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useExperiences } from '@/hooks'
 
-const DOT_COLORS = ['#818cf8', '#67e8f9', '#c084fc', '#fb923c']
+const DOT_COLORS = ['#a78bfa', '#22d3ee', '#f472b6', '#c084fc']
 
 export const Experience = () => {
   const { t, i18n } = useTranslation()

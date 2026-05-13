@@ -6,10 +6,10 @@ import { api, type ApiCategory } from '@/utils/api'
 import type { SkillType } from '@/types'
 
 const STATIC_CATEGORIES: ApiCategory[] = [
-  { id: 1, key: 'frontend', label_fr: 'Frontend',         label_en: 'Frontend',       accent: '#818cf8', order: 0 },
-  { id: 2, key: 'backend',  label_fr: 'Backend',          label_en: 'Backend',        accent: '#67e8f9', order: 1 },
-  { id: 3, key: 'devops',   label_fr: 'DevOps & Outils',  label_en: 'DevOps & Tools', accent: '#c084fc', order: 2 },
-  { id: 4, key: 'learning', label_fr: 'En apprentissage', label_en: 'Learning',       accent: '#fb923c', order: 3 },
+  { id: 1, key: 'frontend', label_fr: 'Frontend',         label_en: 'Frontend',       accent: '#a78bfa', order: 0 },
+  { id: 2, key: 'backend',  label_fr: 'Backend',          label_en: 'Backend',        accent: '#22d3ee', order: 1 },
+  { id: 3, key: 'devops',   label_fr: 'DevOps & Outils',  label_en: 'DevOps & Tools', accent: '#f472b6', order: 2 },
+  { id: 4, key: 'learning', label_fr: 'En apprentissage', label_en: 'Learning',       accent: '#c084fc', order: 3 },
 ]
 
 export const Skills = () => {
