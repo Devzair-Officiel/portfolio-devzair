@@ -135,7 +135,7 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
 
         {/* ── Hover: full content ──────────────────────────── */}
         <div
-          className="absolute inset-0 flex flex-col justify-between p-6 z-20"
+          className="absolute inset-0 flex flex-col justify-end p-6 z-20"
           style={{
             opacity: hovered ? 1 : 0,
             transform: hovered ? 'translateY(0)' : 'translateY(18px)',
@@ -143,10 +143,10 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
             pointerEvents: hovered ? 'auto' : 'none',
           }}
         >
-          {/* Top: title + description + stack */}
-          <div className="flex flex-col gap-4 mt-10">
+          {/* Content: title + description + stack */}
+          <div className="flex flex-col gap-4">
             <h3
-              className="text-2xl font-bold leading-tight"
+              className="text-3xl font-bold leading-tight"
               style={{ fontFamily: 'var(--font-display)', color: '#fff' }}
             >
               {project.title}
@@ -182,13 +182,14 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
             </div>
           </div>
 
-          {/* Bottom: CTAs */}
-          <div className="flex gap-2">
+          {/* CTAs — grand espace au-dessus */}
+          <div className="flex gap-2 mt-10">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onPointerDown={e => e.stopPropagation()}
                 onClick={e => e.stopPropagation()}
                 className="flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-lg transition-opacity hover:opacity-85"
                 style={{
@@ -208,6 +209,7 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onPointerDown={e => e.stopPropagation()}
                 onClick={e => e.stopPropagation()}
                 className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg transition-opacity hover:opacity-85"
                 style={{
