@@ -56,6 +56,7 @@ export interface ApiProject {
   live_url: string | null
   image_url: string | null
   is_active: boolean
+  order: number
   created_at: string
   updated_at: string
 }
@@ -222,6 +223,15 @@ export const api = {
         body: JSON.stringify(data),
       })
       return json<ApiProject>(res)
+    },
+
+    reorder: async (authFetch: AuthFetch, orderedIds: number[]): Promise<void> => {
+      const res = await authFetch(`${API_URL}/api/v1/projects/reorder`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderedIds),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
     },
 
     delete: async (authFetch: AuthFetch, id: number): Promise<void> => {

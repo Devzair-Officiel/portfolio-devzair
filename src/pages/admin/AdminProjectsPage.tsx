@@ -1,20 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '@/context/AuthContext'
 import { api, type ApiProject } from '@/utils/api'
 import { SkeletonCard } from '@/components/admin/Skeleton'
+
+const DragHandle = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+    <line x1="8" y1="6" x2="16" y2="6" />
+    <line x1="8" y1="12" x2="16" y2="12" />
+    <line x1="8" y1="18" x2="16" y2="18" />
+  </svg>
+)
 
 export const AdminProjectsPage = () => {
   const { authFetch } = useAuthContext()
   const [projects, setProjects] = useState<ApiProject[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
+  const dragIndex = useRef<number | null>(null)
 
   const load = () => {
     setLoading(true)
     api.projects
       .list()
-      .then(setProjects)
+      .then(data => setProjects([...data].sort((a, b) => a.order - b.order)))
       .catch(() => setError('Impossible de charger les projets'))
       .finally(() => setLoading(false))
   }
@@ -40,6 +50,28 @@ export const AdminProjectsPage = () => {
     }
   }
 
+  const handleDragStart = (index: number) => {
+    dragIndex.current = index
+  }
+
+  const handleDrop = async (dropIndex: number) => {
+    if (dragIndex.current === null || dragIndex.current === dropIndex) return
+    const reordered = [...projects]
+    const [moved] = reordered.splice(dragIndex.current, 1)
+    reordered.splice(dropIndex, 0, moved)
+    dragIndex.current = null
+    setProjects(reordered)
+    setSaving(true)
+    try {
+      await api.projects.reorder(authFetch, reordered.map(p => p.id))
+    } catch {
+      alert('Erreur lors de la sauvegarde de l\'ordre')
+      load()
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
@@ -48,6 +80,7 @@ export const AdminProjectsPage = () => {
           <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Projets</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
             {projects.length} projet{projects.length !== 1 ? 's' : ''}
+            {saving && <span className="ml-2" style={{ color: 'var(--color-brand)' }}>Sauvegarde…</span>}
           </p>
         </div>
         <Link
@@ -80,18 +113,29 @@ export const AdminProjectsPage = () => {
             </div>
           ) : (
             <>
+              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                Glissez-déposez les lignes pour changer l'ordre d'affichage.
+              </p>
+
               {/* Vue mobile — cartes */}
               <div className="flex flex-col gap-3 md:hidden">
-                {projects.map(project => (
+                {projects.map((project, index) => (
                   <div
                     key={project.id}
-                    className="p-4 rounded-2xl flex flex-col gap-3"
+                    draggable
+                    onDragStart={() => handleDragStart(index)}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={() => handleDrop(index)}
+                    className="p-4 rounded-2xl flex flex-col gap-3 cursor-grab active:cursor-grabbing"
                     style={{ background: 'var(--surface-card-solid)', border: '1px solid var(--border)' }}
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="font-semibold text-sm truncate" style={{ color: 'var(--text)' }}>{project.title}</p>
-                        <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--text-muted)' }}>{project.description}</p>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span style={{ color: 'var(--text-muted)', opacity: 0.5 }}><DragHandle /></span>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-sm truncate" style={{ color: 'var(--text)' }}>{project.title}</p>
+                          <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--text-muted)' }}>{project.description}</p>
+                        </div>
                       </div>
                       <button
                         onClick={() => handleToggleActive(project)}
@@ -160,7 +204,7 @@ export const AdminProjectsPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                      {['Statut', 'Titre', 'Stack', 'Liens', 'Actions'].map(h => (
+                      {['', 'Statut', 'Titre', 'Stack', 'Liens', 'Actions'].map(h => (
                         <th key={h} className="px-5 py-3 text-left font-medium" style={{ color: 'var(--text-muted)' }}>
                           {h}
                         </th>
@@ -171,11 +215,18 @@ export const AdminProjectsPage = () => {
                     {projects.map((project, i) => (
                       <tr
                         key={project.id}
-                        className="transition-colors duration-100"
+                        draggable
+                        onDragStart={() => handleDragStart(i)}
+                        onDragOver={e => e.preventDefault()}
+                        onDrop={() => handleDrop(i)}
+                        className="transition-colors duration-100 cursor-grab active:cursor-grabbing"
                         style={{ borderBottom: i < projects.length - 1 ? '1px solid var(--border)' : 'none' }}
                         onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-alt)')}
                         onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                       >
+                        <td className="px-3 py-4" style={{ color: 'var(--text-muted)', opacity: 0.4 }}>
+                          <DragHandle />
+                        </td>
                         <td className="px-5 py-4">
                           <button
                             onClick={() => handleToggleActive(project)}
