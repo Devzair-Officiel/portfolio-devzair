@@ -27,6 +27,7 @@ const WaveDecoration = () => {
           src="/vague_mobile.webp"
           alt=""
           aria-hidden="true"
+          fetchPriority="high"
           decoding="async"
           className="select-none w-full h-full"
           style={{ opacity, mixBlendMode: 'screen', filter: 'opacity(0.18)', objectFit: 'cover', objectPosition: 'top' }}
