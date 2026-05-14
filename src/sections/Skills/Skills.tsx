@@ -18,10 +18,9 @@ const STATIC_CATEGORIES: ApiCategory[] = [
 interface SkillIconProps {
   skill: SkillType
   index: number
-  accent: string
 }
 
-const SkillIcon = ({ skill, index, accent }: SkillIconProps) => {
+const SkillIcon = ({ skill, index }: SkillIconProps) => {
   const Icon = skill.icon ? (ICON_REGISTRY[skill.icon] ?? TbQuestionMark) : TbQuestionMark
   const color = skill.color ?? '#a0aec0'
 
@@ -167,7 +166,7 @@ export const Skills = () => {
                 <div className="flex flex-wrap gap-3 sm:gap-5 flex-1">
                   {catSkills.length > 0
                     ? catSkills.map((skill, i) => (
-                        <SkillIcon key={skill.name} skill={skill} index={i} accent={cat.accent} />
+                        <SkillIcon key={skill.name} skill={skill} index={i} />
                       ))
                     : (
                       <p className="text-xs self-center" style={{ color: 'var(--text-muted)' }}>
