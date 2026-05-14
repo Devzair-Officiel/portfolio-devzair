@@ -89,6 +89,7 @@ export const Hero = () => {
   const heroTagline = settingsMap[`hero_tagline_${lang}`] ?? t('hero.tagline')
   const githubUrl   = settingsMap['github_url'] || 'https://github.com/devzair-officiel'
   const logoSrc     = settingsMap['logo_url'] ? `${API_URL}${settingsMap['logo_url']}` : '/devzair-sm.webp'
+  const cvUrl       = settingsMap[`cv_${lang}_url`] ? `${API_URL}${settingsMap[`cv_${lang}_url`]}` : `/cv-${lang}.pdf`
 
   return (
     <section
@@ -212,7 +213,7 @@ export const Hero = () => {
           </a>
 
           <a
-            href={`/cv-${lang}.pdf`}
+            href={cvUrl}
             download
             className="px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200"
             style={{
@@ -238,7 +239,7 @@ export const Hero = () => {
           </a>
 
           <a
-            href={`/cv-${lang}.pdf`}
+            href={cvUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200"

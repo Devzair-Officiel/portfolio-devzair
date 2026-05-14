@@ -15,6 +15,12 @@ export const AdminContentPage = () => {
   const [logoUploading, setLogoUploading] = useState(false)
   const [logoError, setLogoError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [cvFrUrl, setCvFrUrl] = useState<string | null>(null)
+  const [cvEnUrl, setCvEnUrl] = useState<string | null>(null)
+  const [cvUploading, setCvUploading] = useState<'fr' | 'en' | null>(null)
+  const [cvError, setCvError] = useState<string | null>(null)
+  const cvFrRef = useRef<HTMLInputElement>(null)
+  const cvEnRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(true)
   const [saved, setSaved] = useState(false)
@@ -31,6 +37,8 @@ export const AdminContentPage = () => {
         setHeroTaglineEn(map['hero_tagline_en'] ?? '')
         setGithubUrl(map['github_url'] ?? '')
         setLogoUrl(map['logo_url'] ?? null)
+        setCvFrUrl(map['cv_fr_url'] ?? null)
+        setCvEnUrl(map['cv_en_url'] ?? null)
       })
       .finally(() => setFetching(false))
   }, [])
@@ -48,6 +56,24 @@ export const AdminContentPage = () => {
     } finally {
       setLogoUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  const handleCvChange = async (e: React.ChangeEvent<HTMLInputElement>, lang: 'fr' | 'en') => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setCvError(null)
+    setCvUploading(lang)
+    try {
+      const { url } = await api.upload.cv(authFetch, file, lang)
+      if (lang === 'fr') setCvFrUrl(url)
+      else setCvEnUrl(url)
+    } catch {
+      setCvError('Erreur lors de l\'upload du CV')
+    } finally {
+      setCvUploading(null)
+      if (lang === 'fr' && cvFrRef.current) cvFrRef.current.value = ''
+      if (lang === 'en' && cvEnRef.current) cvEnRef.current.value = ''
     }
   }
 
@@ -290,6 +316,72 @@ export const AdminContentPage = () => {
               />
             </div>
           </div>
+        </div>
+
+        {/* CV */}
+        <div
+          className="flex flex-col gap-4 p-5 rounded-2xl"
+          style={{ background: 'var(--surface-alt)', border: '1px solid var(--border)' }}
+        >
+          <h2 className="text-sm font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>CV</h2>
+          {cvError && <p className="text-xs" style={{ color: '#f87171' }}>{cvError}</p>}
+          {(['fr', 'en'] as const).map(lang => {
+            const url = lang === 'fr' ? cvFrUrl : cvEnUrl
+            const ref = lang === 'fr' ? cvFrRef : cvEnRef
+            const uploading = cvUploading === lang
+            return (
+              <div key={lang} className="flex items-center gap-4">
+                <span
+                  className="text-xs font-bold px-2 py-0.5 rounded-full uppercase shrink-0"
+                  style={{ background: 'var(--color-brand-glow)', color: 'var(--color-brand)' }}
+                >
+                  {lang}
+                </span>
+                <div className="flex-1 min-w-0">
+                  {url ? (
+                    <a
+                      href={`${API_URL}${url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs truncate block hover:underline"
+                      style={{ color: '#67e8f9' }}
+                    >
+                      cv_{lang}.pdf ✓
+                    </a>
+                  ) : (
+                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                      Aucun CV{lang === 'en' ? ' (optionnel)' : ''}
+                    </span>
+                  )}
+                </div>
+                <input
+                  ref={ref}
+                  type="file"
+                  accept="application/pdf"
+                  onChange={e => handleCvChange(e, lang)}
+                  className="hidden"
+                  id={`cv-upload-${lang}`}
+                />
+                <label
+                  htmlFor={`cv-upload-${lang}`}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-opacity hover:opacity-80 shrink-0"
+                  style={{ background: 'var(--color-brand)', color: '#fff', opacity: uploading ? 0.6 : 1, pointerEvents: uploading ? 'none' : 'auto' }}
+                >
+                  {uploading ? (
+                    <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                    </svg>
+                  ) : (
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                  )}
+                  {url ? 'Remplacer' : 'Uploader'}
+                </label>
+              </div>
+            )
+          })}
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>PDF uniquement · max 20 Mo · remplace automatiquement le précédent</p>
         </div>
 
         <div className="flex gap-3 pt-2">

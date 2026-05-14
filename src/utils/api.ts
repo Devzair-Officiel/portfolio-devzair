@@ -199,6 +199,13 @@ export const api = {
       const res = await authFetch(`${API_URL}/api/v1/upload/logo`, { method: 'POST', body: form })
       return json<{ url: string }>(res)
     },
+
+    cv: async (authFetch: AuthFetch, file: File, lang: 'fr' | 'en'): Promise<{ url: string }> => {
+      const form = new FormData()
+      form.append('file', file)
+      const res = await authFetch(`${API_URL}/api/v1/upload/cv?lang=${lang}`, { method: 'POST', body: form })
+      return json<{ url: string }>(res)
+    },
   },
 
   projects: {
