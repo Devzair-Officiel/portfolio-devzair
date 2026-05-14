@@ -203,10 +203,11 @@ export const Contact = () => {
           <form onSubmit={handleSubmit} className="glass-card p-8 flex flex-col gap-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                <label htmlFor="contact-name" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                   {lang === 'fr' ? 'Nom' : 'Name'}
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
                   name="name"
                   value={form.name}
@@ -218,10 +219,11 @@ export const Contact = () => {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                <label htmlFor="contact-email" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                   Email
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
                   name="email"
                   value={form.email}
@@ -235,10 +237,11 @@ export const Contact = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+              <label htmlFor="contact-message" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                 Message
               </label>
               <textarea
+                id="contact-message"
                 name="message"
                 value={form.message}
                 onChange={handleChange}
