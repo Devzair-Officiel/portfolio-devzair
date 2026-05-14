@@ -35,7 +35,7 @@ export const Navbar = () => {
         {/* Logo */}
         <a href="#hero" aria-label="devZair" className="flex items-center gap-2.5 group">
           <img
-            src="/devzair.png"
+            src="/devzair-sm.webp"
             alt="devZair"
             width={32}
             height={32}

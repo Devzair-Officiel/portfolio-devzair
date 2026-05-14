@@ -131,7 +131,7 @@ export const AdminContentPage = () => {
                 />
               ) : (
                 <img
-                  src="/devzair.png"
+                  src="/devzair-sm.webp"
                   alt="Logo par défaut"
                   className="w-full h-full object-cover"
                 />

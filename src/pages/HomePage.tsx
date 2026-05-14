@@ -11,9 +11,11 @@ const WaveDecoration = () => {
       {/* Desktop — ancré en bas */}
       <div className="absolute inset-x-0 bottom-0 pointer-events-none hidden sm:block" style={{ zIndex: 1 }}>
         <motion.img
-          src="/vague.png"
+          src="/vague.webp"
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
           className="select-none w-full"
           style={{ opacity, mixBlendMode: 'screen', filter: 'opacity(0.4)', display: 'block' }}
         />
@@ -22,9 +24,11 @@ const WaveDecoration = () => {
       {/* Mobile — couvre tout le wrapper */}
       <div className="absolute inset-0 pointer-events-none block sm:hidden" style={{ zIndex: 1 }}>
         <motion.img
-          src="/vague_mobile.png"
+          src="/vague_mobile.webp"
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
           className="select-none w-full h-full"
           style={{ opacity, mixBlendMode: 'screen', filter: 'opacity(0.18)', objectFit: 'cover', objectPosition: 'top' }}
         />
@@ -52,9 +56,11 @@ export const HomePage = () => {
 
         <div className="relative isolate">
           <img
-            src="/line.png"
+            src="/line.webp"
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none select-none"
             style={{
               position: 'absolute',

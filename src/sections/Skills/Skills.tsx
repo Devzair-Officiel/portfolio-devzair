@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { TbQuestionMark } from 'react-icons/tb'
+import { IconQuestionMark } from '@/components/icons/InlineIcons'
 import { skills as staticSkills } from '@/data'
 import { api, type ApiCategory } from '@/utils/api'
 import { ICON_REGISTRY } from '@/utils/iconRegistry'
@@ -21,7 +21,7 @@ interface SkillIconProps {
 }
 
 const SkillIcon = ({ skill, index }: SkillIconProps) => {
-  const Icon = skill.icon ? (ICON_REGISTRY[skill.icon] ?? TbQuestionMark) : TbQuestionMark
+  const Icon = skill.icon ? (ICON_REGISTRY[skill.icon] ?? IconQuestionMark) : IconQuestionMark
   const color = skill.color ?? '#a0aec0'
 
   return (

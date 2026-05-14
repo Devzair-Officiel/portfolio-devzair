@@ -88,7 +88,7 @@ export const Hero = () => {
   const heroTitle   = settingsMap[`hero_title_${lang}`]   ?? t('hero.title')
   const heroTagline = settingsMap[`hero_tagline_${lang}`] ?? t('hero.tagline')
   const githubUrl   = settingsMap['github_url'] || 'https://github.com/devzair-officiel'
-  const logoSrc     = settingsMap['logo_url'] ? `${API_URL}${settingsMap['logo_url']}` : '/devzair.png'
+  const logoSrc     = settingsMap['logo_url'] ? `${API_URL}${settingsMap['logo_url']}` : '/devzair-sm.webp'
 
   return (
     <section
@@ -120,6 +120,8 @@ export const Hero = () => {
               alt="devZair logo"
               width={40}
               height={40}
+              fetchPriority="high"
+              decoding="sync"
               style={{ position: 'relative', borderRadius: '12px', display: 'block' }}
             />
           </div>

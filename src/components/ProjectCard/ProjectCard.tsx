@@ -39,8 +39,8 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
             alt={project.title}
             className="absolute inset-0 w-full h-full object-cover"
             style={{
-              transform: hovered ? 'scale(1.07)' : 'scale(1)',
-              filter: hovered ? 'brightness(0.3) saturate(1.3)' : 'brightness(0.65)',
+              transform: lit ? 'scale(1.07)' : 'scale(1)',
+              filter: lit ? 'brightness(0.3) saturate(1.3)' : 'brightness(0.65)',
               transition: 'transform 0.6s ease, filter 0.5s ease',
             }}
           />
@@ -108,7 +108,7 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
-            background: hovered
+            background: lit
               ? `linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 55%, ${accentColor}15 100%)`
               : `linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 50%, transparent 75%)`,
             transition: 'background 0.45s ease',
@@ -119,8 +119,8 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
         <div
           className="absolute bottom-0 left-0 right-0 p-6 z-20"
           style={{
-            opacity: hovered ? 0 : 1,
-            transform: hovered ? 'translateY(6px)' : 'translateY(0)',
+            opacity: lit ? 0 : 1,
+            transform: lit ? 'translateY(6px)' : 'translateY(0)',
             transition: 'opacity 0.28s ease, transform 0.32s ease',
             pointerEvents: 'none',
           }}
@@ -137,10 +137,10 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
         <div
           className="absolute inset-0 flex flex-col justify-end p-6 z-20"
           style={{
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? 'translateY(0)' : 'translateY(18px)',
+            opacity: lit ? 1 : 0,
+            transform: lit ? 'translateY(0)' : 'translateY(18px)',
             transition: 'opacity 0.38s ease, transform 0.42s ease',
-            pointerEvents: hovered ? 'auto' : 'none',
+            pointerEvents: lit ? 'auto' : 'none',
           }}
         >
           {/* Content: title + description + stack */}

@@ -56,7 +56,7 @@ export const Contact = () => {
 
       {/* Art décoratif gauche — haut-gauche, partiellement coupé */}
       <motion.img
-        src="/art.png"
+        src="/art.webp"
         alt=""
         aria-hidden="true"
         className="pointer-events-none select-none absolute"
@@ -74,7 +74,7 @@ export const Contact = () => {
 
       {/* Art décoratif droit — bas-droite, miroir, partiellement coupé */}
       <motion.img
-        src="/art.png"
+        src="/art.webp"
         alt=""
         aria-hidden="true"
         className="pointer-events-none select-none absolute"

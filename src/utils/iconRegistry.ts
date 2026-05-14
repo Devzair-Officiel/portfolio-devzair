@@ -13,7 +13,7 @@ import {
   SiAngular, SiSvelte, SiNuxt,
   SiPrisma, SiSupabase, SiFirebase,
 } from 'react-icons/si'
-import { TbServer } from 'react-icons/tb'
+import { IconServer } from '@/components/icons/InlineIcons'
 
 export interface IconOption {
   key: string
@@ -34,7 +34,7 @@ export const ICON_REGISTRY: Record<string, IconType> = {
   SiRust, SiGo, SiSwift, SiKotlin, SiCplusplus, SiC,
   SiAngular, SiSvelte, SiNuxt,
   SiPrisma, SiSupabase, SiFirebase,
-  TbServer,
+  TbServer: IconServer as unknown as IconType,
 }
 
 export const ICON_OPTIONS: IconOption[] = [
