@@ -208,6 +208,60 @@ export const Hero = () => {
           >
             {t('hero.cta_contact')}
           </a>
+
+          <a
+            href={`/cv-${lang}.pdf`}
+            download
+            className="px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200"
+            style={{
+              border: '1px solid var(--border-bright)',
+              color: 'var(--text)',
+              fontFamily: 'var(--font-display)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'rgba(139,92,246,0.5)'
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(139,92,246,0.15)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'var(--border-bright)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            <span className="flex items-center gap-2">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-8m0 8l-3-3m3 3l3-3M4 20h16" />
+              </svg>
+              {lang === 'fr' ? 'Télécharger mon CV' : 'Download my CV'}
+            </span>
+          </a>
+
+          <a
+            href={`/cv-${lang}.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200"
+            style={{
+              border: '1px solid var(--border-bright)',
+              color: 'var(--text)',
+              fontFamily: 'var(--font-display)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.5)'
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(6,182,212,0.15)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'var(--border-bright)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            <span className="flex items-center gap-2">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              {lang === 'fr' ? 'Visionner mon CV' : 'View my CV'}
+            </span>
+          </a>
         </motion.div>
 
         {/* Stats */}

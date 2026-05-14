@@ -66,6 +66,10 @@ export const fr = {
     error: 'Une erreur est survenue. Merci de réessayer ou de me contacter directement par email.',
   },
   nav: {
+    skills:     'Compétences',
+    projects:   'Projets',
+    experience: 'Expériences',
+    contact:    'Contact',
     theme_dark: 'Passer en mode clair',
     theme_light: 'Passer en mode sombre',
     lang_switch: 'English',

@@ -65,6 +65,10 @@ export const en = {
     error: 'Something went wrong. Please try again or contact me directly by email.',
   },
   nav: {
+    skills:     'Skills',
+    projects:   'Projects',
+    experience: 'Experience',
+    contact:    'Contact',
     theme_dark: 'Switch to light mode',
     theme_light: 'Switch to dark mode',
     lang_switch: 'Français',

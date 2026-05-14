@@ -36,8 +36,11 @@ export const Marquee = () => (
     style={{
       borderTop: '1px solid var(--border)',
       borderBottom: '1px solid var(--border)',
-      maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
-      WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+      background: 'rgba(0,0,0,0.25)',
+      backdropFilter: 'blur(6px)',
+      WebkitBackdropFilter: 'blur(6px)',
+      maskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)',
+      WebkitMaskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)',
     }}
   >
     <div

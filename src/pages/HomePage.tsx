@@ -1,5 +1,37 @@
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { Background, Navbar, Marquee } from '@/components'
 import { Hero, Skills, Projects, Experience, Contact } from '@/sections'
+
+const WaveDecoration = () => {
+  const { scrollY } = useScroll()
+  const opacity = useTransform(scrollY, [0, 500], [1, 0])
+
+  return (
+    <>
+      {/* Desktop — ancré en bas */}
+      <div className="absolute inset-x-0 bottom-0 pointer-events-none hidden sm:block" style={{ zIndex: 1 }}>
+        <motion.img
+          src="/vague.png"
+          alt=""
+          aria-hidden="true"
+          className="select-none w-full"
+          style={{ opacity, mixBlendMode: 'screen', filter: 'opacity(0.4)', display: 'block' }}
+        />
+      </div>
+
+      {/* Mobile — couvre tout le wrapper */}
+      <div className="absolute inset-0 pointer-events-none block sm:hidden" style={{ zIndex: 1 }}>
+        <motion.img
+          src="/vague_mobile.png"
+          alt=""
+          aria-hidden="true"
+          className="select-none w-full h-full"
+          style={{ opacity, mixBlendMode: 'screen', filter: 'opacity(0.18)', objectFit: 'cover', objectPosition: 'top' }}
+        />
+      </div>
+    </>
+  )
+}
 
 export const HomePage = () => {
   return (
@@ -7,11 +39,38 @@ export const HomePage = () => {
       <Background />
       <Navbar />
       <main className="pt-16">
-        <Hero />
-        <Marquee />
+
+        <div className="relative">
+          <div className="relative" style={{ zIndex: 2 }}>
+            <Hero />
+            <Marquee />
+          </div>
+          <WaveDecoration />
+        </div>
+
         <Skills />
-        <Projects />
-        <Experience />
+
+        <div className="relative isolate">
+          <img
+            src="/line.png"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none select-none"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'fill',
+              opacity: 0.85,
+              mixBlendMode: 'screen',
+              zIndex: -1,
+            }}
+          />
+          <Projects />
+          <Experience />
+        </div>
+
         <Contact />
       </main>
     </>

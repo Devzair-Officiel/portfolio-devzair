@@ -52,7 +52,47 @@ export const Contact = () => {
   })
 
   return (
-    <section id="contact" className="py-24 px-6 max-w-5xl mx-auto">
+    <section id="contact" className="relative py-24 px-6 overflow-hidden">
+
+      {/* Art décoratif gauche — haut-gauche, partiellement coupé */}
+      <motion.img
+        src="/art.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute"
+        style={{
+          left: '-120px',
+          bottom: '-40px',
+          width: 'clamp(260px, 28vw, 420px)',
+          zIndex: 0,
+        }}
+        initial={{ opacity: 0, x: -30, scaleX: -1 }}
+        whileInView={{ opacity: 0.35, x: 0, scaleX: -1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
+      />
+
+      {/* Art décoratif droit — bas-droite, miroir, partiellement coupé */}
+      <motion.img
+        src="/art.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute"
+        style={{
+          right: '-80px',
+          bottom: '-40px',
+          width: 'clamp(260px, 28vw, 420px)',
+          opacity: 0,
+          transform: 'scaleX(-1) rotate(10deg)',
+          zIndex: 0,
+        }}
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 0.28, x: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 1.2, ease: 'easeOut', delay: 0.15 }}
+      />
+
+      <div className="relative max-w-5xl mx-auto" style={{ zIndex: 1 }}>
       {/* Header */}
       <motion.div
         className="mb-16"
@@ -238,6 +278,8 @@ export const Contact = () => {
             </div>
           </form>
         </motion.div>
+      </div>
+
       </div>
     </section>
   )
