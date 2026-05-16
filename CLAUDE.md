@@ -10,7 +10,7 @@
 
 | Champ         | Valeur                                             |
 |---------------|----------------------------------------------------|
-| Développeur   | Aurélien Boudon (devZair)                          |
+| Développeur   | Aurélien BOUDON (devZair)                          |
 | GitHub        | `devzair-officiel`                                 |
 | Domaine       | `devzair.fr`                                       |
 | Niveau React  | Débutant — en apprentissage actif                  |

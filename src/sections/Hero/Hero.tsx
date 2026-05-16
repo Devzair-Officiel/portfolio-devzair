@@ -137,7 +137,7 @@ export const Hero = () => {
           >
             <ScrambleTitle text="Aurélien" className="gradient-text-alt" delay={0.2} />
             <ScrambleTitle
-              text="Boudon"
+              text="BOUDON"
               className="gradient-text"
               style={{ marginTop: '0.05em' }}
               delay={0.5}

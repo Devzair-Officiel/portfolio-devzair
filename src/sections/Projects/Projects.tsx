@@ -60,7 +60,6 @@ const CarouselItem = ({ project, idx, active, n, carouselPos, cardW, sideX, acce
       style={{
         width: cardW, height: '100%',
         left: '50%', marginLeft: -cardW / 2,
-        transformStyle: 'preserve-3d',
         x: x, rotateY: rotY, scale, opacity, zIndex: zIdx,
         cursor: isSide ? 'pointer' : 'grab',
       }}
@@ -68,11 +67,11 @@ const CarouselItem = ({ project, idx, active, n, carouselPos, cardW, sideX, acce
     >
       {isActive && (
         <div
-          className="absolute bottom-0 left-6 right-6 h-10 blur-2xl pointer-events-none"
-          style={{ background: accent + '55', transform: 'translateY(16px)' }}
+          className="absolute bottom-0 left-4 right-4 h-16 pointer-events-none"
+          style={{ background: accent + '70', filter: 'blur(28px)', transform: 'translateY(20px)' }}
         />
       )}
-      <div style={{ height: '100%', pointerEvents: isActive ? 'auto' : 'none' }}>
+      <div style={{ height: '100%', borderRadius: '1rem', display: 'grid', clipPath: 'inset(0 round 1rem)', willChange: 'transform', pointerEvents: isActive ? 'auto' : 'none' }}>
         <ProjectCard project={project} accentColor={accent} index={idx} isActive={isActive} />
       </div>
     </motion.div>
@@ -170,7 +169,33 @@ export const Projects = () => {
   )
 
   return (
-    <section className="py-16 sm:py-32 overflow-hidden">
+    <section id="projects" className="relative py-16 sm:py-32 overflow-hidden">
+
+      {/* Pattern de points avec fondu */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: 'radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)',
+        backgroundSize: '28px 28px',
+        WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, black 15%, black 85%, transparent 100%)',
+        maskImage: 'linear-gradient(180deg, transparent 0%, black 15%, black 85%, transparent 100%)',
+      }} />
+
+      {/* Spotlight centré derrière le carousel */}
+      <div className="absolute pointer-events-none" style={{
+        top: '25%', left: '50%', transform: 'translateX(-50%)',
+        width: '900px', height: '650px',
+        background: 'radial-gradient(ellipse, rgba(139,92,246,0.13) 0%, rgba(6,182,212,0.07) 45%, transparent 70%)',
+        filter: 'blur(50px)',
+      }} />
+
+      {/* Blobs coins */}
+      <div className="absolute pointer-events-none"
+        style={{ top: '0%', left: '-10%', width: '500px', height: '500px',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.18), transparent 65%)',
+          filter: 'blur(90px)', borderRadius: '50%' }} />
+      <div className="absolute pointer-events-none"
+        style={{ bottom: '0%', right: '-10%', width: '500px', height: '500px',
+          background: 'radial-gradient(circle, rgba(6,182,212,0.15), transparent 65%)',
+          filter: 'blur(90px)', borderRadius: '50%' }} />
 
       <motion.div
         className="max-w-6xl mx-auto px-4 sm:px-6 text-center mb-12 sm:mb-16"

@@ -1,7 +1,7 @@
 export const fr = {
   hero: {
     label: 'devZair',
-    name: 'Aurélien Boudon',
+    name: 'Aurélien BOUDON',
     title: 'Développeur Full Stack',
     tagline:
       "Je prends en charge l'ensemble d'un projet web — du serveur à l'interface — pour livrer des solutions complètes, sans dépendances.",

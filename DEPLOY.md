@@ -1,104 +1,85 @@
 # Mise en production — devZair Portfolio
 
-## Architecture
+## Architecture réelle
 
 ```
 Internet
    │
    ▼
-Caddy (ports 80/443) — HTTPS automatique Let's Encrypt
-   ├── devzair.fr                   → fichiers statiques React
-   └── api-portfolio.devzair.fr     → reverse proxy → FastAPI :8000
-                                                          │
-                                                     PostgreSQL (réseau interne)
+Apache (ports 80/443) — SSL Let's Encrypt
+   ├── devzair.fr              → 127.0.0.1:8081  (Caddy, fichiers React statiques)
+   └── api-portfolio.devzair.fr → 127.0.0.1:8000  (FastAPI)
+                                        │
+                                   PostgreSQL (réseau interne Docker)
 ```
+
+## Structure sur le serveur
+
+```
+/var/www/portfolio/
+  ├── portfolio-devzair/        ← repo front (docker-compose.prod.yml, deploy.sh, .env)
+  └── portfolio-devzair-api/   ← repo API (référencé via ../portfolio-devzair-api)
+```
+
+> Toutes les commandes `docker compose` se lancent depuis `portfolio-devzair/` avec `-f docker-compose.prod.yml`.
 
 ---
 
-## Prérequis sur le serveur
+## Premier déploiement
 
-- Ubuntu 22.04+
-- Docker + Docker Compose : `apt install docker.io docker-compose-plugin`
-- Ports **80** et **443** ouverts dans le firewall
-- DNS configuré :
-  - `devzair.fr` → IP du serveur
-  - `api-portfolio.devzair.fr` → même IP
-
----
-
-## Structure attendue sur le serveur
-
-Les deux repos doivent être côte à côte dans le même dossier :
-
-```
-~/devzair/
-  ├── front/    ← ce repo (contient docker-compose.prod.yml et deploy.sh)
-  └── api/      ← repo API
-```
-
----
-
-## 1. Cloner les deux repos
+### 1. Cloner les deux repos
 
 ```bash
-mkdir ~/devzair && cd ~/devzair
-git clone <url-repo-front> front
-git clone <url-repo-api> api
+cd /var/www/portfolio
+git clone <url-repo-front> portfolio-devzair
+git clone <url-repo-api> portfolio-devzair-api
 ```
 
----
-
-## 2. Créer le fichier `.env`
+### 2. Créer le `.env`
 
 ```bash
-cd ~/devzair/front
+cd /var/www/portfolio/portfolio-devzair
 cp .env.example .env
 nano .env
 ```
 
-| Variable | Valeur |
-|---|---|
-| `CADDY_DOMAIN` | `devzair.fr` |
-| `CADDY_API_DOMAIN` | `api-portfolio.devzair.fr` |
-| `CADDY_EMAIL` | ton email (pour Let's Encrypt) |
-| `VITE_API_URL` | `https://api-portfolio.devzair.fr` |
-| `DB_PASSWORD` | mot de passe fort |
-| `SECRET_KEY` | généré avec la commande ci-dessous |
-
-Générer `SECRET_KEY` :
+Générer la `SECRET_KEY` :
 ```bash
 python3 -c "import secrets; print(secrets.token_hex(32))"
 ```
 
----
-
-## 3. Premier déploiement
+### 3. Lancer le déploiement
 
 ```bash
-cd ~/devzair/front
 chmod +x deploy.sh
 ./deploy.sh
 ```
 
-Le script pull les deux repos, build les images, lance les conteneurs et applique les migrations.  
-Caddy obtient les certificats HTTPS **automatiquement**.
+Le script pull les deux repos, rebuild tout, lance les conteneurs et applique les migrations.
 
----
-
-## 4. Créer l'utilisateur admin
+### 4. Créer l'utilisateur admin (première fois uniquement)
 
 ```bash
 docker exec -it devzair-api python src/manage.py create-user
 ```
 
-Connecte-toi ensuite sur `https://devzair.fr/admin`.
-
 ---
 
-## Mises à jour
+## Mettre à jour en production
 
 ```bash
-cd ~/devzair/front && ./deploy.sh
+cd /var/www/portfolio/portfolio-devzair
+./deploy.sh
+```
+
+**Rebuilder un seul service** (plus rapide) :
+
+```bash
+# Après un git pull dans portfolio-devzair-api/
+docker compose -f docker-compose.prod.yml up -d --build api
+
+# Après un changement front
+docker compose -f docker-compose.prod.yml up -d --build frontend
 ```
 
 ---
@@ -106,21 +87,22 @@ cd ~/devzair/front && ./deploy.sh
 ## Commandes utiles
 
 ```bash
-# Logs temps réel (tous les services)
-docker compose -f docker-compose.prod.yml logs -f
+# État des conteneurs
+docker compose -f docker-compose.prod.yml ps
 
-# Logs API uniquement
+# Logs en temps réel
+docker compose -f docker-compose.prod.yml logs -f
 docker compose -f docker-compose.prod.yml logs -f api
 
-# Redémarrer l'API sans rebuild
+# Redémarrer sans rebuild
 docker compose -f docker-compose.prod.yml restart api
 
-# Shell dans le conteneur API
+# Shell dans l'API
 docker exec -it devzair-api sh
 
-# Changer le mot de passe admin
-docker exec -it devzair-api python src/manage.py create-user
+# Vérifier les migrations (doit afficher "head")
+docker compose -f docker-compose.prod.yml exec api alembic current
 
-# Migrations manuelles
+# Appliquer les migrations manuellement
 docker exec devzair-api sh -c "cd /app && python -m alembic -c alembic.ini upgrade head"
 ```

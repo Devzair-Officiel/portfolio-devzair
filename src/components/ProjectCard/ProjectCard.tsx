@@ -17,18 +17,9 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
   const lit = hovered || isActive
 
   return (
-    <div
-      className="h-full rounded-2xl p-px"
-      style={{
-        background: lit
-          ? `linear-gradient(135deg, ${accentColor}, ${accentColor}60 40%, ${accentColor}20 70%, transparent)`
-          : `linear-gradient(135deg, ${accentColor}30, transparent 60%)`,
-        transition: 'background 0.4s ease',
-        boxShadow: isActive ? `0 0 40px ${accentColor}30` : 'none',
-      }}
-    >
       <motion.article
-        className="relative h-full rounded-2xl overflow-hidden cursor-default"
+        className="relative cursor-default"
+        style={{ minHeight: 0 }}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
       >
@@ -36,18 +27,23 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
         {project.imageUrl ? (
           <img
             src={project.imageUrl}
-            alt={project.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            alt=""
+            aria-hidden="true"
             style={{
-              transform: lit ? 'scale(1.07)' : 'scale(1)',
-              filter: lit ? 'brightness(0.3) saturate(1.3)' : 'brightness(0.65)',
-              transition: 'transform 0.6s ease, filter 0.5s ease',
+              position: 'absolute',
+              top: 0, left: 0,
+              width: '100%', height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              filter: lit ? 'brightness(0.55) saturate(1.1)' : 'brightness(0.75)',
+              transition: 'filter 0.5s ease',
+              display: 'block',
             }}
           />
         ) : (
           <div
             className="absolute inset-0"
-            style={{ background: `linear-gradient(150deg, ${accentColor}25 0%, var(--surface-alt) 60%, ${accentColor}10 100%)` }}
+            style={{ background: `linear-gradient(150deg, ${accentColor}35 0%, var(--surface-alt) 55%, ${accentColor}15 100%)` }}
           >
             <div
               className="absolute inset-0"
@@ -77,16 +73,6 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
           </div>
         )}
 
-        {/* ── Top accent bar ───────────────────────────────── */}
-        <div
-          className="absolute top-0 left-0 right-0 z-10"
-          style={{
-            height: '3px',
-            background: `linear-gradient(90deg, ${accentColor}, ${accentColor}80, transparent)`,
-            opacity: lit ? 1 : 0.5,
-            transition: 'opacity 0.3s',
-          }}
-        />
 
         {/* ── Number badge ─────────────────────────────────── */}
         <div className="absolute top-3 left-4 z-10">
@@ -109,8 +95,8 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
             background: lit
-              ? `linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 55%, ${accentColor}15 100%)`
-              : `linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 50%, transparent 75%)`,
+              ? `linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.7) 45%, rgba(0,0,0,0.2) 70%, transparent 100%)`
+              : `linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 50%, transparent 75%)`,
             transition: 'background 0.45s ease',
           }}
         />
@@ -228,6 +214,5 @@ export const ProjectCard = ({ project, accentColor = '#8b5cf6', index, isActive 
           </div>
         </div>
       </motion.article>
-    </div>
   )
 }
